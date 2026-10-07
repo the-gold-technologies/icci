@@ -216,6 +216,14 @@ body {
   --after-splash: 1.6s;
 }
 
+/* Splash already seen in this tab (set by the inline gate script in app/layout.tsx) */
+html.no-splash {
+  --after-splash: 0s;
+}
+html.no-splash .splash {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .splash {
     display: none;

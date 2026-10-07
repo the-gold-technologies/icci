@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { LogoMark } from "./Logo";
 import { container } from "./ui";
 import { contact, nav } from "@/lib/content";
@@ -23,7 +24,7 @@ export default function Footer() {
           <ul className="mt-4 grid grid-cols-2 gap-2 text-sm">
             {nav.map((n) => (
               <li key={n.href}>
-                <a href={n.href} className="text-ink/80 hover:text-saffron">{n.label}</a>
+                <Link href={n.href} className="text-ink/80 hover:text-saffron">{n.label}</Link>
               </li>
             ))}
           </ul>
