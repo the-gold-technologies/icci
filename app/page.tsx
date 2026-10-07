@@ -330,8 +330,9 @@ export default function Home() {
             <SectionHead eyebrow="Gallery" title="Moments from our journey" intro="Events, meetings, conferences and Government interactions." />
             <div className="mt-12 grid auto-rows-[180px] grid-cols-2 gap-4 md:auto-rows-[200px] md:grid-cols-4">
               {gallery.map((g) => (
-                <figure key={g.label} className={`hatch group relative overflow-hidden rounded-2xl bg-gradient-to-br ${g.tone} ${g.span}`}>
-                  <LogoMark className="absolute left-1/2 top-1/2 w-1/3 -translate-x-1/2 -translate-y-1/2 opacity-15 transition group-hover:scale-110" ink="#fff" bg="transparent" />
+                <figure key={g.label} className={`group relative overflow-hidden rounded-2xl bg-charcoal ${g.span}`}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={g.photo} alt={g.label} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                   <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 text-sm font-semibold text-white">
                     {g.label}
                   </figcaption>
