@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ContactForm } from "@/components/Forms";
-import { container } from "@/components/ui";
+import { afterSplash, container, delay } from "@/components/ui";
 import { contact, photos } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -18,14 +18,14 @@ export default function ContactPage() {
         {/* ───────────── Banner ───────────── */}
         <section className="relative overflow-hidden text-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photos.aboutSite} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <img src={photos.aboutSite} alt="" className="enter-settle absolute inset-0 h-full w-full object-cover" style={delay("calc(var(--after-splash) * 0.8)")} />
           <div className="absolute inset-0 bg-gradient-to-r from-[#1a0f08]/85 via-[#1a0f08]/55 to-[#1a0f08]/25" />
           <div className={`${container} relative pb-16 pt-40 lg:pb-20 lg:pt-48`}>
-            <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/85">
-              <span className="tricolor inline-block h-1 w-8 rounded-full" />
+            <p className="enter flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/85" style={afterSplash(150)}>
+              <span className="enter-draw tricolor inline-block h-1 w-8 rounded-full" style={afterSplash(300)} />
               Contact Us
             </p>
-            <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
+            <h1 className="enter mt-5 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl" style={afterSplash(300)}>
               Get in touch with <span className="text-saffron">ICCI</span>.
             </h1>
           </div>

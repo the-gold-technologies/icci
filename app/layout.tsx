@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import Reveal from "@/components/Reveal";
+import Splash from "@/components/Splash";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -17,7 +19,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${poppins.variable} antialiased`}>
-      <body className="min-h-full font-sans">{children}</body>
+      <body className="min-h-full font-sans">
+        <Splash />
+        {children}
+        <Reveal />
+      </body>
     </html>
   );
 }

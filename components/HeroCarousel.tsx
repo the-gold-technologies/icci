@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import { afterSplash, delay } from "./ui";
 import { fields, heroSlides } from "@/lib/content";
 
 const INTERVAL = 6000;
@@ -31,21 +32,24 @@ export default function HeroCarousel({ children }: { children: ReactNode }) {
       aria-roledescription="carousel"
       aria-label="Construction across India"
     >
-      {heroSlides.map((s, i) => (
-        <div
-          key={s.title}
-          className={`absolute inset-0 transition-opacity duration-1000 ${i === active ? "opacity-100" : "opacity-0"}`}
-          aria-hidden={i !== active}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={s.photo}
-            alt={s.title}
-            loading={i === 0 ? "eager" : "lazy"}
-            className={`h-full w-full object-cover transition-transform ease-out ${i === active ? "scale-110 duration-[7000ms]" : "scale-100 duration-0"}`}
-          />
-        </div>
-      ))}
+      {/* On load the photo eases in from a slight zoom as the splash curtain lifts */}
+      <div className="enter-settle absolute inset-0" style={delay("calc(var(--after-splash) * 0.8)")}>
+        {heroSlides.map((s, i) => (
+          <div
+            key={s.title}
+            className={`absolute inset-0 transition-opacity duration-1000 ${i === active ? "opacity-100" : "opacity-0"}`}
+            aria-hidden={i !== active}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={s.photo}
+              alt={s.title}
+              loading={i === 0 ? "eager" : "lazy"}
+              className={`h-full w-full object-cover transition-transform ease-out ${i === active ? "scale-110 duration-[7000ms]" : "scale-100 duration-0"}`}
+            />
+          </div>
+        ))}
+      </div>
 
       {/* Shade only where the copy sits (left + bottom); the rest of the photo stays clear */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#1a0f08]/80 via-[#1a0f08]/35 to-transparent" />
@@ -57,7 +61,7 @@ export default function HeroCarousel({ children }: { children: ReactNode }) {
       <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-end gap-10 px-4 pb-10 pt-32 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8 lg:pb-14">
         <div className="max-w-2xl [text-shadow:0_2px_16px_rgba(0,0,0,0.35)]">{children}</div>
 
-        <div className="relative flex w-full flex-col gap-5 lg:w-auto lg:items-end">
+        <div className="enter relative flex w-full flex-col gap-5 lg:w-auto lg:items-end" style={afterSplash(550)}>
           <ul className="hidden space-y-1.5 text-right text-sm font-medium text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.6)] lg:block">
             {trustPoints.map((t) => (
               <li key={t} className="flex items-center justify-end gap-2">

@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { LogoMark } from "./Logo";
+import { afterSplash } from "./ui";
 import { nav } from "@/lib/content";
 
 // The footer keeps the full list; the header stays lean.
-const headerNav = nav.filter((n) => n.href !== "/#initiatives" && n.href !== "/#leadership");
+const headerNav = nav.filter((n) => n.href !== "/#leadership");
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -24,9 +25,10 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 mx-auto transition-all duration-300 ${
+      className={`enter-drop fixed inset-x-0 top-0 z-50 mx-auto transition-all duration-300 ${
         scrolled ? "max-w-7xl px-4 pt-3 sm:px-6 lg:px-8 lg:pt-2" : "max-w-full pt-2"
       }`}
+      style={afterSplash()}
     >
       <div
         className={`overflow-hidden transition-all duration-300 ${

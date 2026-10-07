@@ -37,7 +37,6 @@ export const nav = [
   { href: "/#leadership", label: "Leadership" },
   { href: "/#membership", label: "Membership" },
   { href: "/#news", label: "News" },
-  { href: "/#gallery", label: "Gallery" },
   { href: "/contact", label: "Contact" },
 ];
 
