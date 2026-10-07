@@ -79,7 +79,7 @@ export function MembershipForm() {
         </Field>
       </div>
       <div className="sm:col-span-2">
-        <button className="w-full rounded-full bg-saffron px-8 py-3.5 font-semibold text-white transition hover:bg-ink sm:w-auto">
+        <button className="w-full rounded-full bg-saffron px-8 py-3.5 font-semibold text-white transition hover:bg-india-green sm:w-auto">
           Submit Membership Enquiry
         </button>
       </div>
@@ -106,7 +106,7 @@ export function SuggestionForm() {
       <Field label="Suggestion / Feedback">
         <textarea required name="suggestion" rows={4} className={input} placeholder="Share your idea, concern or feedback…" />
       </Field>
-      <button className="w-full rounded-full bg-ink px-8 py-3.5 font-semibold text-white transition hover:bg-saffron">
+      <button className="w-full rounded-full bg-saffron px-8 py-3.5 font-semibold text-white transition hover:bg-india-green">
         Submit Suggestion
       </button>
     </form>
@@ -132,7 +132,7 @@ export function ContactForm() {
       <Field label="Message">
         <textarea required name="message" rows={4} className={input} placeholder="Write your message…" />
       </Field>
-      <button className="w-full rounded-full bg-ink px-8 py-3.5 font-semibold text-white transition hover:bg-saffron">
+      <button className="w-full rounded-full bg-saffron px-8 py-3.5 font-semibold text-white transition hover:bg-india-green">
         Send Enquiry
       </button>
     </form>

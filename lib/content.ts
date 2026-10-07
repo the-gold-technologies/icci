@@ -14,15 +14,31 @@ export const photos = {
   representation: photo("1531834685032-c34bf0d84c77"),
 };
 
+export const heroSlides = [
+  { tag: "Infrastructure", title: "Building the backbone of a nation", text: "Highways, bridges and metros connecting India.", photo: photo("1541888946425-d81bb19240f5", 1200) },
+  { tag: "On Site", title: "Skilled hands, safer sites", text: "Championing workforce safety on every project.", photo: photo("1504307651254-35680f356dfd", 1200) },
+  { tag: "Urban Growth", title: "Skylines of a new India", text: "Developments shaping tomorrow's cities.", photo: photo("1486406146926-c627a92ad1ab", 1200) },
+  { tag: "Planning & Design", title: "From blueprint to reality", text: "Architects and engineers working as one.", photo: photo("1503387762-592deb58ef4e", 1200) },
+  { tag: "Rising Together", title: "Every project, a better India", text: "One Chamber for builders, state by state.", photo: photo("1429497419816-9ca5cfb4571a", 1200) },
+];
+
+// Who the Chamber represents; cycles in the hero side card
+export const fields = [
+  { label: "Contractors", photo: photo("1517089596392-fb9a9033e05b", 600) },
+  { label: "Builders", photo: photo("1531834685032-c34bf0d84c77", 600) },
+  { label: "Consultants", photo: photo("1581092160562-40aa08e78837", 600) },
+  { label: "Suppliers", photo: photo("1553413077-190dd305871c", 600) },
+];
+
 export const nav = [
-  { href: "#about", label: "About" },
-  { href: "#vision", label: "Vision" },
-  { href: "#initiatives", label: "Initiatives" },
-  { href: "#leadership", label: "Leadership" },
-  { href: "#membership", label: "Membership" },
-  { href: "#news", label: "News" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/about#vision", label: "Vision" },
+  { href: "/#initiatives", label: "Initiatives" },
+  { href: "/#leadership", label: "Leadership" },
+  { href: "/#membership", label: "Membership" },
+  { href: "/#news", label: "News" },
+  { href: "/#gallery", label: "Gallery" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export const stats = [
@@ -147,6 +163,13 @@ export const news = [
     photo: photo("1518005020951-eccb494ad742", 1000),
     excerpt: "How sustainable construction is moving from a niche to a baseline expectation.",
   },
+  {
+    category: "Events",
+    date: "October 2026",
+    title: "Site safety & skilling: upcoming member workshop",
+    photo: photo("1504307651254-35680f356dfd", 1000),
+    excerpt: "A hands-on session for members on safety standards and workforce skill development.",
+  },
 ];
 
 export const gallery = [
@@ -161,4 +184,40 @@ export const contact = {
   address: "ICCI Secretariat, Address line, New Delhi, India",
   phone: "+91 00000 00000",
   email: "info@icci.org.in",
+};
+
+// About page copy (supplied by the Chamber). `lead` shows up front; `more` sits behind "Read more".
+export const about = {
+  intro: {
+    lead: "The Indian Chamber of Construction Industry (ICCI) is a not-for-profit organisation established to represent, promote, and protect the interests of India’s construction and allied industries. ICCI serves as a platform for enterprises, professionals, industry leaders, policymakers, experts, and other stakeholders to collaborate towards a competitive, transparent, progressive, and sustainable construction ecosystem.",
+    more: [
+      "ICCI works to strengthen enterprises across the sector, including Micro, Small and Medium Enterprises (MSMEs) and large organisations, by promoting innovation, market orientation, self-reliance, quality improvement, skill development, professional training, and sound corporate governance. It also encourages applied research in economics, public policy, management, and technology, translating knowledge and evidence into meaningful industry dialogue and policy inputs.",
+      "Through seminars, conferences, workshops, research publications, consultations, and industry forums, ICCI facilitates knowledge exchange and consensus-building. It also seeks to foster partnerships among government, businesses, institutions, donors, and communities to support initiatives in livelihood generation, education, public health, environmental sustainability, and inclusive development.",
+      "With a nationwide mandate, ICCI aims to contribute constructively to India’s economic and industrial development by strengthening the construction sector and the wider ecosystem in which it operates.",
+    ],
+  },
+  focus: [
+    { title: "Representation & Policy", text: "Effectively representing the sector before government bodies, regulators and policymakers." },
+    { title: "Stronger Enterprises", text: "Helping MSMEs and large organisations become innovative, market-oriented and self-reliant." },
+    { title: "Research & Knowledge", text: "Applied research, policy briefs, seminars and workshops that drive evidence-based dialogue." },
+    { title: "Partnerships for Development", text: "Livelihoods, education, public health, environmental sustainability and inclusive growth." },
+  ],
+  mission: {
+    lead: "ICCI’s mission is to strengthen India’s construction and allied industries by creating a credible platform for representation, collaboration, knowledge, capacity building, and responsible growth.",
+    more: [
+      "We work to ensure that the interests and perspectives of the construction sector are effectively represented before government bodies, regulatory authorities, and policymakers. ICCI seeks to contribute informed industry perspectives to economic legislation, corporate law, trade policy, and regulatory frameworks, with the objective of promoting a competitive, transparent, and progressive business environment.",
+      "A core part of our mission is enabling enterprises of all sizes—particularly MSMEs and emerging businesses—to become more innovative, capable, market-oriented, and self-reliant. Through training, skill development, consultancy, quality improvement, research, and knowledge-sharing initiatives, ICCI seeks to build stronger institutional and professional capabilities across the sector.",
+      "ICCI also brings together industry leaders, professionals, experts, government stakeholders, and the wider business community to exchange knowledge, address common challenges, and develop opportunities for collaboration. We promote evidence-based dialogue through applied research, policy briefs, reports, seminars, conferences, and workshops.",
+      "Beyond industry development, ICCI is committed to facilitating partnerships that contribute to livelihood generation, education, public health, environmental sustainability, and inclusive development—connecting economic progress with broader national development priorities.",
+    ],
+  },
+  vision: {
+    lead: "ICCI envisions a competitive, innovative, responsible, and globally connected Indian construction industry that contributes meaningfully to the nation’s sustainable and inclusive development.",
+    more: [
+      "Our vision is to help build an industry ecosystem in which businesses, professionals, institutions, government, and communities work together to address emerging challenges and unlock new opportunities. We aspire to see Indian construction and allied enterprises equipped with the capabilities, knowledge, skills, technology, and governance practices required to compete effectively in a rapidly evolving domestic and global environment.",
+      "ICCI seeks to become a trusted platform for constructive industry–government engagement, enabling informed dialogue and practical policy inputs that support a transparent, progressive, and business-friendly environment. We envision stronger enterprises, particularly MSMEs, supported by access to knowledge, training, research, expertise, partnerships, and opportunities for continuous improvement.",
+      "We also see research, innovation, and knowledge exchange as essential foundations for the sector’s long-term growth. By bringing together industry leaders, researchers, professionals, policymakers, and institutions, ICCI aims to encourage evidence-based thinking and collaborative solutions to economic, technological, managerial, and policy challenges.",
+      "Ultimately, ICCI’s vision extends beyond industry growth. We aspire to contribute to an India where the growth of construction and related industries creates wider opportunities for livelihoods, skills, education, environmental sustainability, and inclusive development—aligning sectoral progress with the country’s broader development goals.",
+    ],
+  },
 };

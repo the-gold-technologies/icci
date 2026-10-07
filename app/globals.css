@@ -7,6 +7,7 @@
   --color-saffron: #ee6a2c;
   --color-india-green: #16703c;
   --color-concrete: #f4f3f0;
+  --color-cream: #fff7f0;
   --font-sans: var(--font-poppins);
 }
 
@@ -25,16 +26,16 @@ body {
   background: linear-gradient(90deg, #ee6a2c 0 33.33%, #6e6e6e 33.33% 66.66%, #16703c 66.66% 100%);
 }
 
-/* Blueprint-style grid used on dark sections */
+/* Blueprint-style grid used on tinted sections */
 .blueprint {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(17, 17, 17, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 17, 17, 0.05) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
 .hatch {
-  background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 14px);
+  background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0 2px, transparent 2px 14px);
 }
 
 /* ───────────── Motion ───────────── */
@@ -73,6 +74,10 @@ body {
 }
 @keyframes tick {
   to { stroke-dashoffset: 0; }
+}
+@keyframes fill {
+  from { width: 0; }
+  to { width: 100%; }
 }
 @keyframes spin {
   to { transform: rotate(360deg); }
