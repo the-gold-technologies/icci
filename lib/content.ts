@@ -1,17 +1,13 @@
 // Static content for the launch build. Each list is shaped so it can later be
-// served from the CMS (leaders, news, gallery, membership) without UI changes.
+// served from the CMS (leaders, news, membership) without UI changes.
 
 // Placeholder photography (Unsplash) until the Chamber supplies its own.
 const photo = (id: string, w = 1600) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
 
 export const photos = {
-  heroBg: photo("1541888946425-d81bb19240f5", 2400),
-  heroCard: photo("1429497419816-9ca5cfb4571a", 1200),
   about: photo("1503387762-592deb58ef4e"),
   aboutSite: photo("1504307651254-35680f356dfd", 1000),
-  vision: photo("1486406146926-c627a92ad1ab"),
-  representation: photo("1531834685032-c34bf0d84c77"),
 };
 
 export const heroSlides = [
@@ -109,14 +105,14 @@ export const initiatives = [
 ];
 
 export const leaders = [
-  { name: "Leader Name", role: "President", org: "Organisation / Company", state: "State", photo: photo("1560250097-0b93528c311a", 800) },
-  { name: "Leader Name", role: "Vice President", org: "Organisation / Company", state: "State", photo: photo("1519085360753-af0119f7cbe7", 800) },
-  { name: "Leader Name", role: "General Secretary", org: "Organisation / Company", state: "State", photo: photo("1573496359142-b8d87734a5a2", 800) },
-  { name: "Leader Name", role: "Treasurer", org: "Organisation / Company", state: "State", photo: photo("1472099645785-5658abf4ff4e", 800) },
-  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State", photo: photo("1557862921-37829c790f19", 800) },
-  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State", photo: photo("1580489944761-15a19d654956", 800) },
-  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State", photo: photo("1500648767791-00dcc994a43e", 800) },
-  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State", photo: photo("1506794778202-cad84cf45f1d", 800) },
+  { name: "Leader Name", role: "President", org: "Organisation / Company", state: "State" },
+  { name: "Leader Name", role: "Vice President", org: "Organisation / Company", state: "State" },
+  { name: "Leader Name", role: "General Secretary", org: "Organisation / Company", state: "State" },
+  { name: "Leader Name", role: "Treasurer", org: "Organisation / Company", state: "State" },
+  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State" },
+  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State" },
+  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State" },
+  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State" },
 ];
 
 export const membershipCategories = [
@@ -169,14 +165,6 @@ export const news = [
     photo: photo("1504307651254-35680f356dfd", 1000),
     excerpt: "A hands-on session for members on safety standards and workforce skill development.",
   },
-];
-
-export const gallery = [
-  { label: "Founding Meeting", photo: photo("1552664730-d307ca884978", 1200), span: "md:col-span-2 md:row-span-2" },
-  { label: "Government Interaction", photo: photo("1587474260584-136574528ed5", 1200), span: "" },
-  { label: "Member Meet", photo: photo("1556761175-5973dc0f32e7", 1200), span: "" },
-  { label: "Industry Conference", photo: photo("1540575467063-178a50c2df87", 1200), span: "" },
-  { label: "Site Visit", photo: photo("1517089596392-fb9a9033e05b", 1200), span: "" },
 ];
 
 export const contact = {

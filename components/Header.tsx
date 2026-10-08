@@ -46,8 +46,8 @@ export default function Header() {
         >
           {/* "#top" makes Next scroll to the page start instead of keeping the previous scroll position */}
           <Link href="/#top" className="flex shrink-0 items-end gap-3" onClick={() => setOpen(false)}>
-            <LogoMark className="h-10 w-auto shrink-0 lg:h-12" ink={overHero ? "#ffffff" : undefined} bg={overHero ? "transparent" : undefined} />
-            <span className={`text-xs font-medium uppercase leading-[1.16] tracking-normal transition-colors sm:text-sm ${overHero ? "text-white" : "text-ink"}`}>
+            <LogoMark priority className="h-11 w-auto shrink-0 lg:h-14" ink={overHero ? "#ffffff" : undefined} />
+            <span className={`text-xs font-medium uppercase leading-[1.16] tracking-normal transition-colors sm:text-sm ${overHero ? "text-white" : "text-ink font-semibold"}`}>
               Indian Chamber of
               <br />
               Construction Industry

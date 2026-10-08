@@ -1,12 +1,35 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 // Adds `data-in` to every [data-reveal] element as it scrolls into view (styles in globals.css).
 // Re-runs on route change because the root layout persists across client navigation.
+// Also opens each newly visited page at the top: Next's <Link> otherwise keeps the old scroll offset.
 export default function Reveal() {
   const pathname = usePathname();
+  const first = useRef(true);
+  const fromHistory = useRef(false);
+
+  useEffect(() => {
+    // Back/forward should restore the previous position, not jump to the top
+    const onPop = () => (fromHistory.current = true);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (fromHistory.current) {
+      fromHistory.current = false;
+      return;
+    }
+    // Links with a #section are scrolled to that section by Next itself
+    if (!window.location.hash) window.scrollTo({ top: 0, behavior: "instant" });
+  }, [pathname]);
 
   // Once the intro splash has played, later page entrances shouldn't wait for it.
   useEffect(() => {

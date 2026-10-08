@@ -39,8 +39,11 @@ export default function Home() {
               The unified voice of India&apos;s <span className="text-saffron">construction</span> industry.
             </h1>
             <div className="enter mt-8 flex flex-wrap gap-4" style={afterSplash(450)}>
-              <a href="#join" className="rounded-full bg-saffron px-7 py-3.5 font-semibold text-white shadow-lg shadow-black/20 transition hover:bg-saffron/90">
-                Become a Member
+              <a href="#join" className="group inline-flex items-center gap-2 rounded-full bg-saffron px-7 py-3.5 font-semibold text-white shadow-lg shadow-black/20 transition hover:bg-saffron/90">
+                Join the Chamber
+                <svg viewBox="0 0 24 24" className="h-4 w-4 transition group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                  <path d="M5 12h14m-6-6 6 6-6 6" />
+                </svg>
               </a>
               <a href="#about" className="rounded-full border border-white/40 px-7 py-3.5 font-semibold text-white backdrop-blur-sm transition hover:border-white hover:bg-white/10">
                 Discover ICCI
