@@ -18,7 +18,7 @@ export function LogoMark({ className, ink = "#111111", priority = false }: MarkP
   const white = ink.toLowerCase() === "#ffffff" || ink.toLowerCase() === "#fff" || ink === "white";
   return (
     <Image
-      src={white ? "/logo/icci-mark-white.png" : "/logo/icci-mark.png"}
+      src={white ? "/logo/icci-mark-white.webp" : "/logo/icci-mark.webp"}
       alt="ICCI emblem"
       {...MARK}
       loading={priority ? "eager" : undefined}
@@ -32,7 +32,7 @@ export function LogoMark({ className, ink = "#111111", priority = false }: MarkP
 export function LogoLockup({ className, priority = false }: { className?: string; priority?: boolean }) {
   return (
     <Image
-      src="/logo/icci-logo.png"
+      src="/logo/icci-logo.webp"
       alt="Indian Chamber of Construction Industry – Collaborate • Innovate • Build a Better India"
       {...LOCKUP}
       loading={priority ? "eager" : undefined}

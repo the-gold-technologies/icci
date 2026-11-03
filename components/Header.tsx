@@ -6,9 +6,6 @@ import { LogoMark } from "./Logo";
 import { afterSplash } from "./ui";
 import { nav } from "@/lib/content";
 
-// The footer keeps the full list; the header stays lean.
-const headerNav = nav.filter((n) => n.href !== "/#leadership");
-
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -55,13 +52,13 @@ export default function Header() {
           </Link>
 
           <nav className="hidden items-center gap-7 lg:flex">
-            {headerNav.map((n) => (
+            {nav.map((n) => (
               <Link key={n.href} href={n.href} className={`text-sm font-medium transition hover:text-saffron ${overHero ? "text-white/90" : "text-ink/80"}`}>
                 {n.label}
               </Link>
             ))}
             <Link
-              href="/#join"
+              href="/membership#join"
               className="whitespace-nowrap rounded-full bg-saffron px-5 py-2.5 ml-10 text-sm font-semibold text-white transition hover:bg-india-green"
             >
               Become a Member
@@ -83,7 +80,7 @@ export default function Header() {
 
         {open && (
           <nav className="border-t border-zinc-200 px-4 pb-6 pt-2 sm:px-6 lg:hidden">
-            {headerNav.map((n) => (
+            {nav.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
@@ -94,7 +91,7 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href="/#join"
+              href="/membership#join"
               onClick={() => setOpen(false)}
               className="mt-4 block rounded-full bg-saffron py-3 text-center font-semibold text-white"
             >

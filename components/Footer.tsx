@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogoLockup } from "./Logo";
+import { SocialRow } from "./Social";
 import { container } from "./ui";
 import { contact, nav } from "@/lib/content";
 
@@ -11,6 +12,10 @@ export default function Footer() {
         <div>
           {/* Same full logo as the intro splash (emblem, name and tagline) */}
           <LogoLockup className="h-auto w-52" />
+          <p className="mt-8 text-xs font-semibold uppercase tracking-wide text-steel">Follow Us</p>
+          <div className="mt-3">
+            <SocialRow />
+          </div>
         </div>
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-steel">Quick Links</p>

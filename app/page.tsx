@@ -1,19 +1,23 @@
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { afterSplash, container, delay, SectionHead } from "@/components/ui";
 import HeroCarousel from "@/components/HeroCarousel";
-import { MembershipForm } from "@/components/Forms";
 import {
-  benefits,
-  initiatives,
-  leaders,
-  membershipCategories,
+  BenefitsList,
+  CategoriesGrid,
+  InitiativesGrid,
+  LeadersGrid,
+  MembershipEnquiry,
+  MoreLink,
+  ObjectivesGrid,
+} from "@/components/sections";
+import {
   news,
-  objectives,
   stakeholders,
   stats,
 } from "@/lib/content";
-
+import { ArrowRight } from "lucide-react";
 
 // Line icons for the hero highlights strip, in the same order as `stats`.
 const statIcons = [
@@ -41,9 +45,7 @@ export default function Home() {
             <div className="enter mt-8 flex flex-wrap gap-4" style={afterSplash(450)}>
               <a href="#join" className="group inline-flex items-center gap-2 rounded-full bg-saffron px-7 py-3.5 font-semibold text-white shadow-lg shadow-black/20 transition hover:bg-saffron/90">
                 Join the Chamber
-                <svg viewBox="0 0 24 24" className="h-4 w-4 transition group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2.5}>
-                  <path d="M5 12h14m-6-6 6 6-6 6" />
-                </svg>
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" strokeWidth={2.25} aria-hidden />
               </a>
               <a href="#about" className="rounded-full border border-white/40 px-7 py-3.5 font-semibold text-white backdrop-blur-sm transition hover:border-white hover:bg-white/10">
                 Discover ICCI
@@ -83,7 +85,7 @@ export default function Home() {
                 <p>
                   ICCI was formed by industry leaders who felt the need for one credible, organised body to represent
                   the construction and allied industries. Today the Chamber brings together <strong className="text-ink">7 state members</strong> and{" "}
-                  <strong className="text-ink">30 founding members</strong>, with a vision to establish chapters in every state.
+                  <strong className="text-ink">30+ founding members</strong>, with a vision to establish chapters in every state.
                 </p>
                 <p>
                   The Chamber works as a bridge between the industry and Government departments — raising members&apos;
@@ -112,17 +114,12 @@ export default function Home() {
         {/* ───────────── Objectives ───────────── */}
         <section id="objectives" className="bg-concrete py-20 lg:py-28">
           <div className={container}>
-            <div>
+            <div className="flex flex-wrap items-end justify-between gap-6">
               <SectionHead eyebrow="Objectives" title="What the Chamber sets out to achieve" />
-              <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-200 sm:grid-cols-2 lg:grid-cols-3">
-                {objectives.map((o, i) => (
-                  <div key={o.title} data-reveal style={delay(`${i * 80}ms`)} className="bg-white p-8">
-                    <span className="text-sm font-bold text-saffron">{String(i + 1).padStart(2, "0")}</span>
-                    <h3 className="mt-3 text-lg font-semibold text-ink">{o.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-steel">{o.text}</p>
-                  </div>
-                ))}
-              </div>
+              <MoreLink href="/initiatives">See how we work</MoreLink>
+            </div>
+            <div className="mt-10">
+              <ObjectivesGrid />
             </div>
           </div>
         </section>
@@ -149,21 +146,12 @@ export default function Home() {
         {/* ───────────── Key initiatives ───────────── */}
         <section id="initiatives" className="bg-cream py-20 text-ink lg:py-28">
           <div className={container}>
-            <SectionHead
-              eyebrow="Key Initiatives"
-              title="Four pillars that make ICCI work for its members"
-              intro="A practical framework designed to position ICCI as the central platform for contractors, subcontractors, workers and departmental stakeholders."
-            />
-            <div className="mt-12 grid gap-6 md:grid-cols-2">
-              {initiatives.map((p, i) => (
-                <div key={p.title} data-reveal style={delay(`${i * 100}ms`)} className="group rounded-2xl border border-zinc-200 bg-white p-8 transition hover:border-saffron hover:shadow-lg">
-                  <div className="flex items-start justify-between">
-                    <h3 className="text-xl font-semibold">{p.title}</h3>
-                    <span className="text-4xl font-bold text-zinc-200 transition group-hover:text-saffron">{p.tag}</span>
-                  </div>
-                  <p className="mt-4 leading-relaxed text-steel">{p.text}</p>
-                </div>
-              ))}
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <SectionHead eyebrow="Key Initiatives" title="Four pillars that make ICCI work for its members" intro="A practical framework designed to position ICCI as the central platform for contractors, subcontractors, workers and departmental stakeholders." />
+              <MoreLink href="/initiatives">Explore initiatives</MoreLink>
+            </div>
+            <div className="mt-12">
+              <InitiativesGrid />
             </div>
           </div>
         </section>
@@ -172,31 +160,11 @@ export default function Home() {
         <section id="leadership" className="py-20 lg:py-28">
           <div className={container}>
             <div className="flex flex-wrap items-end justify-between gap-6">
-              <SectionHead
-                eyebrow="Leadership & Founding Members"
-                title="The people building the Chamber"
-                intro="Experienced industry leaders from across the states who came together to found ICCI."
-              />
+              <SectionHead eyebrow="National Office Bearers" title="The people leading the Chamber" intro="Experienced industry leaders who came together to found ICCI and now steer it nationally." />
+              <MoreLink href="/leadership">Meet the full leadership</MoreLink>
             </div>
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {leaders.map((l, i) => (
-                <article key={i} data-reveal style={delay(`${(i % 4) * 100}ms`)} className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white transition hover:shadow-xl">
-                  <div className="relative flex aspect-[4/3] items-end justify-center overflow-hidden bg-gradient-to-b from-concrete to-zinc-200">
-                    <svg viewBox="0 0 100 100" className="h-4/5 text-zinc-300 transition group-hover:scale-105" fill="currentColor">
-                      <circle cx="50" cy="36" r="18" />
-                      <path d="M14 100c0-22 16-36 36-36s36 14 36 36z" />
-                    </svg>
-                    <span className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-ink shadow-sm">
-                      {l.state}
-                    </span>
-                  </div>
-                  <div className="p-5">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-saffron">{l.role}</p>
-                    <h3 className="mt-1 text-lg font-semibold text-ink">{l.name}</h3>
-                    <p className="text-sm text-steel">{l.org}</p>
-                  </div>
-                </article>
-              ))}
+            <div className="mt-12">
+              <LeadersGrid />
             </div>
           </div>
         </section>
@@ -204,41 +172,19 @@ export default function Home() {
         {/* ───────────── Membership ───────────── */}
         <section id="membership" className="bg-concrete py-20 lg:py-28">
           <div className={container}>
-            <SectionHead
-              eyebrow="Membership"
-              title="Join the chamber that represents your business"
-              intro="ICCI membership is open to businesses, professionals and organisations across the construction and allied industries."
-            />
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {membershipCategories.map((c, i) => (
-                <div
-                  key={c.title}
-                  data-reveal
-                  style={delay(`${i * 80}ms`)}
-                  className={`rounded-2xl p-6 transition hover:-translate-y-1 bg-white text-ink hover:shadow-lg ${i === 0 ? "ring-2 ring-saffron" : ""}`}
-                >
-                  <h3 className="font-semibold">{c.title}</h3>
-                  <p className={`mt-2 text-sm leading-relaxed text-steel`}>{c.text}</p>
-                </div>
-              ))}
-              <a href="#join" data-reveal style={delay(`${membershipCategories.length * 80}ms`)} className="flex flex-col justify-between rounded-2xl bg-saffron p-6 text-white transition hover:bg-india-green">
-                <h3 className="font-semibold">Not sure where you fit?</h3>
-                <span className="mt-4 text-sm font-semibold">Send an enquiry →</span>
-              </a>
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <SectionHead eyebrow="Membership" title="Join the chamber that represents your business" intro="ICCI membership is open to businesses, professionals and organisations across the construction and allied industries." />
+              <MoreLink href="/membership">Membership details</MoreLink>
+            </div>
+            <div className="mt-12">
+              <CategoriesGrid />
             </div>
 
             <div className="mt-14" data-reveal>
               <h3 className="text-2xl font-bold text-ink">Benefits of membership</h3>
-              <ul className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
-                {benefits.map((b) => (
-                  <li key={b} className="flex gap-2.5 text-sm leading-relaxed text-steel">
-                    <svg viewBox="0 0 24 24" className="mt-0.5 h-4 w-4 shrink-0 text-india-green" fill="none" stroke="currentColor" strokeWidth={2.5}>
-                      <path d="M5 12l5 5L19 7" />
-                    </svg>
-                    {b}
-                  </li>
-                ))}
-              </ul>
+              <div className="mt-6">
+                <BenefitsList />
+              </div>
             </div>
           </div>
         </section>
@@ -248,11 +194,11 @@ export default function Home() {
           <div className={container}>
             <div className="flex flex-wrap items-end justify-between gap-4">
               <SectionHead eyebrow="News & Articles" title="Latest from the Chamber" />
-              <a href="#news" className="text-sm font-semibold text-saffron hover:text-india-green">View all →</a>
+              <MoreLink href="/news">View all</MoreLink>
             </div>
             <div className="mt-8 grid gap-3 lg:grid-cols-2">
               {/* Featured story */}
-              <article data-reveal className="group relative min-h-[310px] overflow-hidden rounded-2xl bg-zinc-200">
+              <Link href={`/news/${news[0].slug}`} data-reveal className="group relative block min-h-[310px] overflow-hidden rounded-2xl bg-zinc-200">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={news[0].photo} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
@@ -263,14 +209,16 @@ export default function Home() {
                   </div>
                   <h3 className="mt-3 text-xl font-semibold leading-snug sm:text-2xl">{news[0].title}</h3>
                   <p className="mt-1.5 line-clamp-1 max-w-lg text-sm text-white/80">{news[0].excerpt}</p>
-                  <span className="mt-3 inline-block text-sm font-semibold group-hover:text-saffron">Read more →</span>
+                  <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold group-hover:text-saffron">
+                    Read more <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" strokeWidth={2} aria-hidden />
+                  </span>
                 </div>
-              </article>
+              </Link>
 
               {/* Three compact stories */}
               <div className="grid gap-3 lg:grid-rows-3">
                 {news.slice(1, 4).map((n, i) => (
-                  <article key={n.title} data-reveal style={delay(`${(i + 1) * 100}ms`)} className="group flex items-center gap-4 rounded-2xl border border-zinc-200 bg-white p-3 transition hover:border-saffron hover:shadow-md">
+                  <Link key={n.slug} href={`/news/${n.slug}`} data-reveal style={delay(`${(i + 1) * 100}ms`)} className="group flex items-center gap-4 rounded-2xl border border-zinc-200 bg-white p-3 transition hover:border-saffron hover:shadow-md">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={n.photo} alt="" loading="lazy" className="h-24 w-28 shrink-0 rounded-xl object-cover sm:w-32" />
                     <div className="min-w-0">
@@ -281,7 +229,7 @@ export default function Home() {
                       <h3 className="mt-1 line-clamp-2 text-base font-semibold leading-snug text-ink group-hover:text-saffron">{n.title}</h3>
                       <p className="mt-1 line-clamp-1 text-sm text-steel">{n.excerpt}</p>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -291,27 +239,7 @@ export default function Home() {
         {/* ───────────── Membership enquiry ───────────── */}
         <section className="py-14 lg:py-20">
           <div className={container}>
-            <div id="join" className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-14">
-              <div>
-                <SectionHead
-                  eyebrow="Become a Member"
-                  title="Apply for ICCI membership"
-                  intro="Fill in your details and our team will reach out with next steps."
-                />
-                <div className="mt-8 rounded-2xl border border-zinc-200 bg-concrete p-6" data-reveal style={delay("120ms")}>
-                  <h4 className="font-semibold text-ink">Eligibility</h4>
-                  <p className="mt-2 text-sm leading-relaxed text-steel">
-                    Any registered business, firm, professional or organisation engaged in construction or allied
-                    activities in India is eligible to apply. Applications are reviewed by the Chamber&apos;s membership
-                    committee.
-                  </p>
-                </div>
-              </div>
-              <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm lg:p-10" data-reveal style={delay("200ms")}>
-                <h3 className="mb-8 text-2xl font-bold text-ink">Membership Enquiry</h3>
-                <MembershipForm />
-              </div>
-            </div>
+            <MembershipEnquiry />
           </div>
         </section>
       </main>

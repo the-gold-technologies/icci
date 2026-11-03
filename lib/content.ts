@@ -26,19 +26,19 @@ export const fields = [
   { label: "Suppliers", photo: photo("1553413077-190dd305871c", 600) },
 ];
 
+// One menu item = one page. Add a dropdown only when an item gets several pages (e.g. News + Gallery).
 export const nav = [
   { href: "/about", label: "About" },
-  { href: "/about#vision", label: "Vision" },
-  { href: "/#initiatives", label: "Initiatives" },
-  { href: "/#leadership", label: "Leadership" },
-  { href: "/#membership", label: "Membership" },
-  { href: "/#news", label: "News" },
+  { href: "/leadership", label: "Leadership" },
+  { href: "/initiatives", label: "Initiatives" },
+  { href: "/events", label: "Events" },
+  { href: "/news", label: "News" },
   { href: "/contact", label: "Contact" },
 ];
 
 export const stats = [
   { value: "7", label: "State Members" },
-  { value: "30", label: "Founding Members" },
+  { value: "30+", label: "Founding Members" },
   { value: "1", label: "Unified Industry Voice" },
   { value: "Pan-India", label: "Chapter Vision" },
 ];
@@ -104,16 +104,170 @@ export const initiatives = [
   },
 ];
 
-export const leaders = [
-  { name: "Leader Name", role: "President", org: "Organisation / Company", state: "State" },
-  { name: "Leader Name", role: "Vice President", org: "Organisation / Company", state: "State" },
-  { name: "Leader Name", role: "General Secretary", org: "Organisation / Company", state: "State" },
-  { name: "Leader Name", role: "Treasurer", org: "Organisation / Company", state: "State" },
-  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State" },
-  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State" },
-  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State" },
-  { name: "Leader Name", role: "Founding Member", org: "Organisation / Company", state: "State" },
+// ── Leadership (supplied by the Chamber; order follows the ICCI letterhead) ──
+// `slug` is the anchor on /leadership (e.g. /leadership#ved-khurana) and the photo file name.
+// People without a supplied photo show their initials until one arrives.
+export type Person = {
+  slug: string;
+  name: string;
+  role: string;
+  org?: string;
+  photo?: string;
+  bio?: string[];
+};
+
+const leaderPhoto = (slug: string) => `/leaders/${slug}.webp`;
+
+/** National office bearers: the "orange" tier shown on the home and About pages. */
+export const officeBearers: Person[] = [
+  {
+    slug: "ved-khurana",
+    name: "Ved Khurana",
+    role: "National President",
+    org: "Chairman & Whole-time Director, Globe Civil Projects Limited",
+    photo: leaderPhoto("ved-khurana"),
+    bio: [
+      "Mr Ved Khurana is a construction industry professional with over four decades of experience in civil construction and infrastructure. He has been associated with the sector since 1981 and has contributed to institutional, educational, healthcare and public infrastructure projects across India.",
+      "He is the Chairman and Whole-time Director of Globe Civil Projects Limited, an EPC construction company. His experience includes project execution, business development, contract management and infrastructure development.",
+      "Mr Khurana has also been associated with the Builders Association of India (BAI) for over two decades and has served as Chairman of BAI Delhi, contributing to industry representation and engagement on matters affecting the construction sector.",
+      "He serves as Pro Vice Chairman of Beas Education and Healthcare Society, which operates Delhi Public School, Amritsar.",
+      "As Founder President of ICCI, Mr Khurana is focused on creating a platform for collaboration among construction professionals, contractors, developers, consultants, manufacturers and other industry stakeholders. The Chamber aims to support industry dialogue, knowledge sharing, professional development and engagement with government and policymakers.",
+    ],
+  },
+  {
+    slug: "prem-singh-khamesra",
+    name: "Prem Singh Khamesra",
+    role: "National Vice President",
+    org: "Chartered Accountant · Façades & Fenestration",
+    photo: leaderPhoto("prem-singh-khamesra"),
+    bio: [
+      "Prem Singh Khamesra is a Chartered Accountant, entrepreneur and business professional with nearly five decades of experience across architectural façades, fenestration, construction and manufacturing.",
+      "A national rank holder in Chartered Accountancy, he practised for 26 years before entering industry. His experience in the façade sector includes the design, engineering, manufacturing and execution of building-envelope and fenestration systems.",
+      "Mr Khamesra has served on the boards of UP Financial Corporation, Kanpur Plastipack and Mirza International. He currently serves on the Board of Universal Cables Limited.",
+      "He is associated with the Indian Chamber of Construction Industry (ICCI), the Builders Association of India and BNI. His interests include literature, mentoring and community service.",
+    ],
+  },
+  {
+    slug: "rajiv-goel",
+    name: "Rajiv Goel",
+    role: "National Vice President",
+    org: "Founder, Earthcon Systems India Pvt. Ltd.",
+    photo: leaderPhoto("rajiv-goel"),
+    bio: [
+      "Rajiv Goel is a technocrat and entrepreneur with over 38 years of experience across structural consultancy, infrastructure development, construction and real estate.",
+      "An alumnus of BITS Pilani and the Indian Institute of Technology (IIT) Delhi, he has worked across technical and business functions within the construction and infrastructure sectors.",
+      "In 2002, he established Earthcon Systems India Pvt. Ltd., a company specialising in the construction of Reinforced Soil Walls for highway and infrastructure projects. His work in this field includes technical publications and project-based solutions for infrastructure development.",
+      "Mr Goel is associated with industry bodies including NAREDCO, CREDAI and the Builders’ Association of India (BAI), contributing to industry dialogue and institutional initiatives concerning the construction and real estate sectors.",
+      "He is also involved with philanthropic organisations working in the areas of social welfare and community development.",
+    ],
+  },
+  {
+    slug: "pawan-garg",
+    name: "Pawan Garg",
+    role: "National Vice President",
+    org: "Chairman, Alstone Industries Pvt. Ltd. & Reynobond India",
+    bio: [
+      "Pawan Garg is an entrepreneur with over 37 years of experience in the building materials and glass industries.",
+      "He is the Chairman of Alstone Industries Pvt. Ltd. and Reynobond India. His work spans the development and manufacture of building material solutions, including Wood Composite Panels (WPC), silicone sealants, Aluminium Composite Panels (ACP) and High-Pressure Laminates (HPL).",
+      "Under his leadership, both organisations have expanded their manufacturing capabilities in India, with a focus on building materials for applications in contemporary construction.",
+      "Mr Garg’s experience includes promoting the adoption of locally manufactured building solutions and supporting developments in sustainable and fire-safe construction materials.",
+    ],
+  },
+  {
+    slug: "sandeep-kumar-jindal",
+    name: "Sandeep Kumar Jindal",
+    role: "National General Secretary",
+    org: "CMD, Atharva Laboratories Pvt. Ltd.",
+    photo: leaderPhoto("sandeep-kumar-jindal"),
+    bio: [
+      "Sandeep Kumar Jindal is a technocrat and industry professional with over 36 years of experience in construction, real estate, testing and building materials.",
+      "An engineer by qualification, he holds an MBA in Real Estate, for which he received a University Gold Medal, and an Executive MBA from XLRI. He has also undertaken specialised training in glass façade technology in Finland.",
+      "He has led 26 housing projects across India, including projects valued at up to ₹500 crore, and has overseen the delivery of 30 lakh sq ft of construction within two and a half years.",
+      "Mr Jindal is the Chairman and Managing Director of Atharva Laboratories Pvt. Ltd. and Founder Director of Ashtech Buildpro India Pvt. Ltd. He also serves as a Director of several companies and has experience in the manufacture of AAC blocks for brands including ModCrete, Ambuja, ACC and BILTECH.",
+      "He has experience in international consulting and sourcing and is a Fellow of The Institution of Engineers (India) and the Institution of Valuers, a Chartered Engineer and an Approved Valuer.",
+      "For over three decades, he has been associated with educational initiatives through Shiksha Bharti and Vidya Bharti, as well as several social organisations.",
+    ],
+  },
+  {
+    slug: "umesh-tanwar",
+    name: "Umesh Tanwar",
+    role: "National Treasurer",
+    org: "Owner, Royal Continental Constructions",
+    photo: leaderPhoto("umesh-tanwar"),
+    bio: [
+      "Umesh Tanwar is a civil engineering and construction professional with experience in civil contracting and infrastructure development.",
+      "He is the Owner of Royal Continental Constructions, where he oversees civil construction, contracting and Pre-Engineered Building (PEB) infrastructure projects. His project experience includes specialised construction works at Rashtrapati Bhavan and Qutub Minar.",
+      "Mr Tanwar is also associated with professional and business networks. He serves as Treasurer of the Rotary Club of Capital City New Delhi and is a member of the Indian Entrepreneur Association (IEA) and BNI (Business Network International). He has previously held positions as Secretary and Treasurer within his BNI chapter.",
+      "As Founder Treasurer of the Indian Chamber of Construction Industry (ICCI), he contributes to the Chamber’s efforts to support industry collaboration, professional engagement and stakeholder participation across the construction sector.",
+    ],
+  },
 ];
+
+export const nationalExecutive: Person[] = [
+  { slug: "madan-lal", name: "Madan Lal", role: "National Executive Committee" },
+  {
+    slug: "charanjit-singh",
+    name: "Charanjit Singh",
+    role: "National Executive Committee",
+    org: "INTER TECH",
+    photo: leaderPhoto("charanjit-singh"),
+    bio: [
+      "INTER TECH is a pioneer in advanced electrical earthing and lightning protection solutions, backed by 50+ years of combined industry experience. As the exclusive Indian distributor for James Durrans Group, UK, it specialises in maintenance-free Marconite earthing systems designed for a 50+ year lifespan.",
+      "Its solutions secure energy assets and infrastructure across utility-scale solar, wind and industrial projects, and are trusted by Avaada Energy, Tata Steel, the Indian Air Force, DMRC and IOCL.",
+    ],
+  },
+  { slug: "atul-kapoor", name: "Atul Kapoor", role: "National Executive Committee" },
+  { slug: "praveen-mittal", name: "Praveen Mittal", role: "National Executive Committee" },
+  { slug: "sumer-singh", name: "Sumer Singh", role: "National Executive Committee" },
+  { slug: "amit-pasricha", name: "Amit Pasricha", role: "National Executive Committee" },
+  {
+    slug: "suneet-wattal",
+    name: "Suneet Wattal",
+    role: "National Executive Committee",
+    org: "Freelance Consultant – PMC, IT & Strategy",
+    photo: leaderPhoto("suneet-wattal"),
+  },
+  {
+    slug: "pradeep-singh",
+    name: "Pradeep Singh",
+    role: "National Executive Committee",
+    org: "Swaraj Infracon Pvt. Ltd.",
+    photo: leaderPhoto("pradeep-singh"),
+    bio: [
+      "Swaraj Infracon Pvt. Ltd. is a registered contractor of C.P.W.D., undertaking civil engineering projects involving RCC structures, buildings, industrial structures, and sanitary and electrical installations, along with site development works such as drainage, boundary walls, roads, horticulture and water harvesting.",
+      "The company undertakes contracts for government agencies across Delhi, Uttar Pradesh, West Bengal, Rajasthan, Jharkhand, Uttarakhand, Odisha, Bihar and Himachal Pradesh.",
+    ],
+  },
+  {
+    slug: "dheeraj-sahni",
+    name: "Dheeraj Sahni",
+    role: "National Executive Committee",
+    org: "Flooring, Paints & Waterproofing · Est. 1961",
+    photo: leaderPhoto("dheeraj-sahni"),
+    bio: [
+      "Established in 1961: epoxy and PU flooring, micro, terrazzo and wooden flooring, self-levelling floors, paints and chemicals trading, waterproofing and painting services.",
+    ],
+  },
+  { slug: "manoj-kumar", name: "Manoj Kumar", role: "National Executive Committee" },
+];
+
+// Placeholder state chapters (the site says "7 state members"); replace with real chapter details.
+export const chapters = Array.from({ length: 7 }, () => ({
+  state: "State",
+  head: "Chapter Head",
+  contact: "chapter@email",
+}));
+
+// How to join, shown on the Membership page. Placeholder process until the Chamber confirms it.
+export const joinSteps = [
+  { title: "Send an enquiry", text: "Fill in the membership enquiry form with your business details." },
+  { title: "Submit documents", text: "Our team shares the application form and the list of documents to attach." },
+  { title: "Committee review", text: "The membership committee reviews your application." },
+  { title: "Welcome to ICCI", text: "Once approved and the fee is paid, you join the member network." },
+];
+
+// Events: empty until the Chamber shares its calendar. The Events page shows an empty state meanwhile.
+export const events: { title: string; date: string; location: string; text: string; past?: boolean }[] = [];
 
 export const membershipCategories = [
   { title: "Corporate Members", text: "Large construction and infrastructure companies shaping the sector." },
@@ -136,17 +290,27 @@ export const benefits = [
   "A say in shaping the future of the industry",
 ];
 
+// Placeholder articles until the Chamber supplies real ones. `slug` is the URL: /news/<slug>.
+// `body` paragraphs render on the article page; replace with the real text.
+const placeholderBody = [
+  "This is placeholder text for the full article. The Chamber will supply the final copy, which will replace these paragraphs.",
+  "Each article can run to several paragraphs, covering the background, what it means for members, and any next steps or dates.",
+  "For questions about this update, members can contact the ICCI secretariat through the Contact page.",
+];
+
 export const news = [
   {
     category: "Chamber News",
     date: "October 2026",
-    title: "ICCI brings together 7 state members and 30 founding members",
+    slug: "icci-founding-members",
+    title: "ICCI brings together 7 state members and 30+ founding members",
     photo: photo("1521791136064-7986c2920216", 1000),
     excerpt: "The Chamber begins its journey as a unified platform for the construction and allied industries.",
   },
   {
     category: "Government / Regulatory",
     date: "October 2026",
+    slug: "public-works-tendering-payment-norms",
     title: "Key updates on public works tendering & payment norms",
     photo: photo("1450101499163-c8848c66ca85", 1000),
     excerpt: "A summary of recent circulars and what they mean for contractors and suppliers.",
@@ -154,6 +318,7 @@ export const news = [
   {
     category: "Articles & Insights",
     date: "October 2026",
+    slug: "green-building-practices",
     title: "Why green building practices matter for every contractor",
     photo: photo("1518005020951-eccb494ad742", 1000),
     excerpt: "How sustainable construction is moving from a niche to a baseline expectation.",
@@ -161,17 +326,28 @@ export const news = [
   {
     category: "Events",
     date: "October 2026",
+    slug: "site-safety-skilling-workshop",
     title: "Site safety & skilling: upcoming member workshop",
     photo: photo("1504307651254-35680f356dfd", 1000),
     excerpt: "A hands-on session for members on safety standards and workforce skill development.",
   },
-];
+].map((n) => ({ ...n, body: placeholderBody }));
 
 export const contact = {
-  address: "ICCI Secretariat, Address line, New Delhi, India",
-  phone: "+91 00000 00000",
-  email: "info@icci.org.in",
+  address: "ICCI Secretariat, PHD House, 4/2 August Kranti Marg, Siri Institutional Area, Hauz Khas, New Delhi 110016",
+  phone: "+91 93157 00465",
+  email: "contact@icci.co.in",
 };
+
+// Social profiles: shown as the fixed rail on the left edge and as icons in the footer.
+// TODO: replace "#" with the Chamber's real profile URLs (not supplied yet).
+export const social = [
+  { key: "facebook", label: "Facebook", href: "#" },
+  { key: "instagram", label: "Instagram", href: "#" },
+  { key: "linkedin", label: "LinkedIn", href: "#" },
+  { key: "x", label: "X (Twitter)", href: "#" },
+  { key: "youtube", label: "YouTube", href: "#" },
+] as const;
 
 // About page copy (supplied by the Chamber). `lead` shows up front; `more` sits behind "Read more".
 export const about = {

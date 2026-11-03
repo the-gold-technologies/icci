@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { afterSplash, container, delay, Eyebrow, SectionHead } from "@/components/ui";
+import { ChaptersGrid, LeadersGrid, MoreLink } from "@/components/sections";
+import { afterSplash, container, delay, Eyebrow, ReadMore, SectionHead } from "@/components/ui";
 import { about, photos } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -9,30 +10,6 @@ export const metadata: Metadata = {
   description:
     "The Indian Chamber of Construction Industry is a not-for-profit organisation representing, promoting and protecting the interests of India’s construction and allied industries.",
 };
-
-// Native <details> toggle: no client JS needed for "Read more".
-function ReadMore({ paragraphs, light = false }: { paragraphs: string[]; light?: boolean }) {
-  return (
-    <details className="group mt-5">
-      <summary
-        className={`inline-flex cursor-pointer list-none items-center gap-1.5 text-sm font-semibold transition [&::-webkit-details-marker]:hidden ${
-          light ? "text-white hover:text-white/80" : "text-saffron hover:text-india-green"
-        }`}
-      >
-        <span className="group-open:hidden">Read more</span>
-        <span className="hidden group-open:inline">Read less</span>
-        <svg viewBox="0 0 24 24" className="h-4 w-4 transition group-open:rotate-180" fill="none" stroke="currentColor" strokeWidth={2.5}>
-          <path d="M6 9l6 6 6-6" />
-        </svg>
-      </summary>
-      <div className={`mt-4 space-y-4 leading-relaxed ${light ? "text-white/85" : "text-steel"}`}>
-        {paragraphs.map((p) => (
-          <p key={p.slice(0, 32)}>{p}</p>
-        ))}
-      </div>
-    </details>
-  );
-}
 
 const focusIcons = [
   "M3 21h18M5 21V10m4 11V10m6 11V10m4 11V10M2 10l10-6 10 6", // representation (institution)
@@ -121,6 +98,37 @@ export default function AboutPage() {
                 <p className="mt-6 text-xl font-semibold leading-snug sm:text-2xl">{about.vision.lead}</p>
                 <ReadMore paragraphs={about.vision.more} light />
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ───────────── Leadership ───────────── */}
+        <section id="leadership" className="bg-concrete py-20 lg:py-28">
+          <div className={container}>
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <SectionHead
+                eyebrow="National Office Bearers"
+                title="The people leading the Chamber"
+                intro="Experienced industry leaders who came together to found ICCI and now steer it nationally."
+              />
+              <MoreLink href="/leadership">Meet the full leadership</MoreLink>
+            </div>
+            <div className="mt-12">
+              <LeadersGrid />
+            </div>
+          </div>
+        </section>
+
+        {/* ───────────── State chapters ───────────── */}
+        <section id="chapters" className="py-20 lg:py-28">
+          <div className={container}>
+            <SectionHead
+              eyebrow="State Chapters"
+              title="ICCI across India"
+              intro="Each state chapter is led by local industry leadership, with a vision to establish a chapter in every state."
+            />
+            <div className="mt-10">
+              <ChaptersGrid />
             </div>
           </div>
         </section>

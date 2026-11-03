@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import { ChevronDown } from "lucide-react";
 
 export const container = "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
 
@@ -14,6 +15,49 @@ export function Eyebrow({ children }: { children: ReactNode }) {
       <span className="tricolor inline-block h-1 w-8 rounded-full" />
       {children}
     </p>
+  );
+}
+
+/** Photo banner at the top of inner pages (sits under the transparent navbar). */
+export function PageBanner({ photo, eyebrow, children }: { photo: string; eyebrow: string; children: ReactNode }) {
+  return (
+    <section className="relative overflow-hidden text-white">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={photo} alt="" className="enter-settle absolute inset-0 h-full w-full object-cover" style={delay("calc(var(--after-splash) * 0.8)")} />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#1a0f08]/85 via-[#1a0f08]/55 to-[#1a0f08]/25" />
+      <div className={`${container} relative pb-16 pt-40 lg:pb-20 lg:pt-48`}>
+        <p className="enter flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/85" style={afterSplash(150)}>
+          <span className="enter-draw tricolor inline-block h-1 w-8 rounded-full" style={afterSplash(300)} />
+          {eyebrow}
+        </p>
+        <h1 className="enter mt-5 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl" style={afterSplash(300)}>
+          {children}
+        </h1>
+      </div>
+    </section>
+  );
+}
+
+/** Native <details> "Read more" toggle: no client JS needed. */
+export function ReadMore({ paragraphs, light = false, children }: { paragraphs: string[]; light?: boolean; children?: ReactNode }) {
+  return (
+    <details className="group mt-5">
+      <summary
+        className={`inline-flex cursor-pointer list-none items-center gap-1.5 text-sm font-semibold transition [&::-webkit-details-marker]:hidden ${
+          light ? "text-white hover:text-white/80" : "text-saffron hover:text-india-green"
+        }`}
+      >
+        <span className="group-open:hidden">Read more</span>
+        <span className="hidden group-open:inline">Read less</span>
+        <ChevronDown className="h-4 w-4 transition group-open:rotate-180" strokeWidth={2.25} aria-hidden />
+      </summary>
+      <div className={`mt-4 space-y-4 leading-relaxed ${light ? "text-white/85" : "text-steel"}`}>
+        {paragraphs.map((p) => (
+          <p key={p.slice(0, 32)}>{p}</p>
+        ))}
+        {children}
+      </div>
+    </details>
   );
 }
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import Reveal from "@/components/Reveal";
 import Splash from "@/components/Splash";
+import { SocialRail } from "@/components/Social";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: splashGate }} />
         <Splash />
         {children}
+        <SocialRail />
         <Reveal />
       </body>
     </html>

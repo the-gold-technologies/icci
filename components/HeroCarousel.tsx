@@ -3,11 +3,12 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { afterSplash, delay } from "./ui";
 import { fields, heroSlides } from "@/lib/content";
+import { ArrowRight, ChevronRight } from "lucide-react";
 
 const INTERVAL = 6000;
 const FIELD_INTERVAL = 3000;
 
-const trustPoints = ["Representing the sector before Government", "Members across 7 states", "Built by 30 founding members"];
+const trustPoints = ["Members across 7 states", "Built by 30+ founding members"];
 
 // Full-bleed photo slider. The hero copy is passed in and sits bottom-left;
 // the side panel (trust points, members card, sliding "we represent" card) sits bottom-right.
@@ -82,9 +83,7 @@ export default function HeroCarousel({ children }: { children: ReactNode }) {
               </div>
               <a href="#join" className="group mt-4 flex items-center gap-1.5 text-sm font-semibold text-white transition hover:text-saffron">
                 Join them
-                <svg viewBox="0 0 24 24" className="h-4 w-4 transition group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2.5}>
-                  <path d="M5 12h14m-6-6 6 6-6 6" />
-                </svg>
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" strokeWidth={2.25} aria-hidden />
               </a>
             </div>
 
@@ -104,9 +103,7 @@ export default function HeroCarousel({ children }: { children: ReactNode }) {
                 aria-label="Next field"
                 className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-saffron text-white transition hover:scale-110"
               >
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.5}>
-                  <path d="M9 6l6 6-6 6" />
-                </svg>
+                <ChevronRight className="h-4 w-4" strokeWidth={2.5} aria-hidden />
               </button>
               <span className="absolute inset-x-3 bottom-2.5">
                 <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">We represent</span>
