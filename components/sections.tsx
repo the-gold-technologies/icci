@@ -45,12 +45,25 @@ export function InitiativesGrid() {
   );
 }
 
-/** Portrait, or the person's initials when no photo has been supplied yet. Fills its (relative) parent. */
+/**
+ * Portrait, or the person's initials when no photo has been supplied yet. Fills its (relative) parent.
+ * Whatever the frame's shape (square card, phone/desktop wide card, round avatar), the face is centred
+ * in it: see .face-photo in globals.css.
+ */
 export function PersonPhoto({ person, className = "" }: { person: Person; className?: string }) {
-  if (person.photo) {
+  const { photo } = person;
+  if (photo) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src={person.photo} alt={person.name} loading="lazy" className={`absolute inset-0 h-full w-full object-cover object-top ${className}`} />
+      <div className={`face-frame absolute inset-0 ${className}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={photo.src}
+          alt={person.name}
+          loading="lazy"
+          className="face-photo h-full w-full"
+          style={{ "--fx": photo.face.x, "--fy": photo.face.y } as React.CSSProperties}
+        />
+      </div>
     );
   }
   const initials = person.name

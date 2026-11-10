@@ -108,6 +108,26 @@ body {
   animation: float 6s ease-in-out infinite;
 }
 
+/*
+ * Member portraits (4:5 photos). The wrapper is a size container, so the image can work out how big
+ * object-fit: cover draws it in *this* frame and shift it until the face (--fx, --fy) sits in the middle
+ * of the frame - clamped so the photo never leaves a gap at an edge.
+ * Rendered size under cover: width = max(frame width, 0.8 x frame height), height = 1.25 x that.
+ */
+.face-frame {
+  container-type: size;
+}
+.face-photo {
+  --w: max(100cqw, 80cqh);
+  --h: max(125cqw, 100cqh);
+  object-fit: cover;
+  /* Fallback for browsers without container units: keeps the face inside the frame */
+  object-position: calc(var(--fx) * 100%) calc(var(--fy) * 100%);
+  object-position:
+    clamp(calc(100cqw - var(--w)), calc(50cqw - var(--fx) * var(--w)), 0px)
+    clamp(calc(100cqh - var(--h)), calc(50cqh - var(--fy) * var(--h)), 0px);
+}
+
 /* Scroll reveal; hidden only when JS can reveal it again */
 @media (scripting: enabled) {
   [data-reveal] {

@@ -95,7 +95,8 @@ function WideCard({ person, index = 0, featured = false }: { person: Person; ind
       style={delay(`${index * 100}ms`)}
       className="flex scroll-mt-28 flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white sm:flex-row"
     >
-      <div className={`relative aspect-[4/3] shrink-0 overflow-hidden bg-zinc-100 sm:aspect-auto ${featured ? "sm:w-64 lg:w-72" : "sm:w-40 lg:w-44"}`}>
+      {/* Square on phones (a 4:3 strip was too short to fit a whole face); beside the text it stretches to the card's height. */}
+      <div className={`relative aspect-square shrink-0 overflow-hidden bg-zinc-100 sm:aspect-auto sm:min-h-52 ${featured ? "sm:w-64 lg:w-72" : "sm:w-40 lg:w-44"}`}>
         <PersonPhoto person={person} />
       </div>
       <div className={`flex min-w-0 flex-1 flex-col ${featured ? "p-6 lg:p-8" : "p-5"}`}>

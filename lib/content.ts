@@ -112,11 +112,18 @@ export type Person = {
   name: string;
   role: string;
   org?: string;
-  photo?: string;
+  photo?: Photo;
   bio?: string[];
 };
 
-const leaderPhoto = (slug: string) => `/leaders/${slug}.webp`;
+/**
+ * A 4:5 portrait (600×750) plus where the face sits in it, so every frame can centre the face
+ * instead of cropping from the top. x / y are fractions of the photo's width / height, measured at
+ * the middle of the head (top of hair or turban down to the chin, ear to ear).
+ */
+export type Photo = { src: string; face: { x: number; y: number } };
+
+const leaderPhoto = (slug: string, x: number, y: number): Photo => ({ src: `/leaders/${slug}.webp`, face: { x, y } });
 
 /** National office bearers: the "orange" tier shown on the home and About pages. */
 export const officeBearers: Person[] = [
@@ -125,7 +132,7 @@ export const officeBearers: Person[] = [
     name: "Ved Khurana",
     role: "National President",
     org: "Chairman & Whole-time Director, Globe Civil Projects Limited",
-    photo: leaderPhoto("ved-khurana"),
+    photo: leaderPhoto("ved-khurana", 0.51, 0.4),
     bio: [
       "Mr Ved Khurana is a construction industry professional with over four decades of experience in civil construction and infrastructure. He has been associated with the sector since 1981 and has contributed to institutional, educational, healthcare and public infrastructure projects across India.",
       "He is the Chairman and Whole-time Director of Globe Civil Projects Limited, an EPC construction company. His experience includes project execution, business development, contract management and infrastructure development.",
@@ -139,7 +146,7 @@ export const officeBearers: Person[] = [
     name: "Prem Singh Khamesra",
     role: "National Vice President",
     org: "Chartered Accountant · Façades & Fenestration",
-    photo: leaderPhoto("prem-singh-khamesra"),
+    photo: leaderPhoto("prem-singh-khamesra", 0.49, 0.38),
     bio: [
       "Prem Singh Khamesra is a Chartered Accountant, entrepreneur and business professional with nearly five decades of experience across architectural façades, fenestration, construction and manufacturing.",
       "A national rank holder in Chartered Accountancy, he practised for 26 years before entering industry. His experience in the façade sector includes the design, engineering, manufacturing and execution of building-envelope and fenestration systems.",
@@ -152,7 +159,7 @@ export const officeBearers: Person[] = [
     name: "Rajiv Goel",
     role: "National Vice President",
     org: "Founder, Earthcon Systems India Pvt. Ltd.",
-    photo: leaderPhoto("rajiv-goel"),
+    photo: leaderPhoto("rajiv-goel", 0.49, 0.48),
     bio: [
       "Rajiv Goel is a technocrat and entrepreneur with over 38 years of experience across structural consultancy, infrastructure development, construction and real estate.",
       "An alumnus of BITS Pilani and the Indian Institute of Technology (IIT) Delhi, he has worked across technical and business functions within the construction and infrastructure sectors.",
@@ -178,7 +185,7 @@ export const officeBearers: Person[] = [
     name: "Sandeep Kumar Jindal",
     role: "National General Secretary",
     org: "CMD, Atharva Laboratories Pvt. Ltd.",
-    photo: leaderPhoto("sandeep-kumar-jindal"),
+    photo: leaderPhoto("sandeep-kumar-jindal", 0.43, 0.42),
     bio: [
       "Sandeep Kumar Jindal is a technocrat and industry professional with over 36 years of experience in construction, real estate, testing and building materials.",
       "An engineer by qualification, he holds an MBA in Real Estate, for which he received a University Gold Medal, and an Executive MBA from XLRI. He has also undertaken specialised training in glass façade technology in Finland.",
@@ -193,7 +200,7 @@ export const officeBearers: Person[] = [
     name: "Umesh Tanwar",
     role: "National Treasurer",
     org: "Owner, Royal Continental Constructions",
-    photo: leaderPhoto("umesh-tanwar"),
+    photo: leaderPhoto("umesh-tanwar", 0.5, 0.35),
     bio: [
       "Umesh Tanwar is a civil engineering and construction professional with experience in civil contracting and infrastructure development.",
       "He is the Owner of Royal Continental Constructions, where he oversees civil construction, contracting and Pre-Engineered Building (PEB) infrastructure projects. His project experience includes specialised construction works at Rashtrapati Bhavan and Qutub Minar.",
@@ -210,13 +217,18 @@ export const nationalExecutive: Person[] = [
     name: "Charanjit Singh",
     role: "National Executive Committee",
     org: "INTER TECH",
-    photo: leaderPhoto("charanjit-singh"),
+    photo: leaderPhoto("charanjit-singh", 0.48, 0.46),
     bio: [
       "INTER TECH is a pioneer in advanced electrical earthing and lightning protection solutions, backed by 50+ years of combined industry experience. As the exclusive Indian distributor for James Durrans Group, UK, it specialises in maintenance-free Marconite earthing systems designed for a 50+ year lifespan.",
       "Its solutions secure energy assets and infrastructure across utility-scale solar, wind and industrial projects, and are trusted by Avaada Energy, Tata Steel, the Indian Air Force, DMRC and IOCL.",
     ],
   },
-  { slug: "atul-kapoor", name: "Atul Kapoor", role: "National Executive Committee" },
+  {
+    slug: "atul-kapur",
+    name: "Atul Kapur",
+    role: "National Executive Committee",
+    photo: leaderPhoto("atul-kapur", 0.5, 0.34),
+  },
   { slug: "praveen-mittal", name: "Praveen Mittal", role: "National Executive Committee" },
   { slug: "sumer-singh", name: "Sumer Singh", role: "National Executive Committee" },
   { slug: "amit-pasricha", name: "Amit Pasricha", role: "National Executive Committee" },
@@ -225,14 +237,14 @@ export const nationalExecutive: Person[] = [
     name: "Suneet Wattal",
     role: "National Executive Committee",
     org: "Freelance Consultant – PMC, IT & Strategy",
-    photo: leaderPhoto("suneet-wattal"),
+    photo: leaderPhoto("suneet-wattal", 0.59, 0.27),
   },
   {
     slug: "pradeep-singh",
     name: "Pradeep Singh",
     role: "National Executive Committee",
     org: "Swaraj Infracon Pvt. Ltd.",
-    photo: leaderPhoto("pradeep-singh"),
+    photo: leaderPhoto("pradeep-singh", 0.51, 0.33),
     bio: [
       "Swaraj Infracon Pvt. Ltd. is a registered contractor of C.P.W.D., undertaking civil engineering projects involving RCC structures, buildings, industrial structures, and sanitary and electrical installations, along with site development works such as drainage, boundary walls, roads, horticulture and water harvesting.",
       "The company undertakes contracts for government agencies across Delhi, Uttar Pradesh, West Bengal, Rajasthan, Jharkhand, Uttarakhand, Odisha, Bihar and Himachal Pradesh.",
@@ -243,7 +255,7 @@ export const nationalExecutive: Person[] = [
     name: "Dheeraj Sahni",
     role: "National Executive Committee",
     org: "Flooring, Paints & Waterproofing · Est. 1961",
-    photo: leaderPhoto("dheeraj-sahni"),
+    photo: leaderPhoto("dheeraj-sahni", 0.5, 0.37),
     bio: [
       "Established in 1961: epoxy and PU flooring, micro, terrazzo and wooden flooring, self-levelling floors, paints and chemicals trading, waterproofing and painting services.",
     ],
@@ -340,13 +352,12 @@ export const contact = {
 };
 
 // Social profiles: shown as the fixed rail on the left edge and as icons in the footer.
-// TODO: replace "#" with the Chamber's real profile URLs (not supplied yet).
+// (No YouTube channel yet: add { key: "youtube", ... } here when there is one; the icon is ready in Social.tsx.)
 export const social = [
-  { key: "facebook", label: "Facebook", href: "#" },
-  { key: "instagram", label: "Instagram", href: "#" },
-  { key: "linkedin", label: "LinkedIn", href: "#" },
-  { key: "x", label: "X (Twitter)", href: "#" },
-  { key: "youtube", label: "YouTube", href: "#" },
+  { key: "facebook", label: "Facebook", href: "https://www.facebook.com/profile.php?id=61595681472168" },
+  { key: "instagram", label: "Instagram", href: "https://www.instagram.com/icci.official.2026/" },
+  { key: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/company/indian-chamber-of-construction-industry/" },
+  { key: "x", label: "X (Twitter)", href: "https://x.com/icci_official" },
 ] as const;
 
 // About page copy (supplied by the Chamber). `lead` shows up front; `more` sits behind "Read more".

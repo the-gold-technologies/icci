@@ -2,7 +2,8 @@
 import type { ReactNode } from "react";
 import { social } from "@/lib/content";
 
-type Key = (typeof social)[number]["key"];
+// Every network we have a mark for; `social` in content.ts decides which are actually shown.
+type Key = "facebook" | "instagram" | "linkedin" | "x" | "youtube";
 
 // Brand marks drawn inline (lucide has no brand icons). All on a 24×24 grid.
 const icons: Record<Key, ReactNode> = {
