@@ -21,8 +21,8 @@ import { ArrowRight } from "lucide-react";
 
 // Line icons for the hero highlights strip, in the same order as `stats`.
 const statIcons = [
-  <path key="map" d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14" />,
   <path key="people" d="M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm13 9v-1a4 4 0 0 0-3-3.9M16 4.1a3 3 0 0 1 0 5.8" />,
+  <path key="map" d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14" />,
   <path key="voice" d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1Zm13-3a5 5 0 0 1 0 8m3-11a9 9 0 0 1 0 14" />,
   <path key="globe" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm-9-9h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />,
 ];
@@ -84,8 +84,8 @@ export default function Home() {
               <div className="mt-6 space-y-4 leading-relaxed text-steel" data-reveal style={delay("120ms")}>
                 <p>
                   ICCI was formed by industry leaders who felt the need for one credible, organised body to represent
-                  the construction and allied industries. Today the Chamber brings together <strong className="text-ink">7 state members</strong> and{" "}
-                  <strong className="text-ink">30+ founding members</strong>, with a vision to establish chapters in every state.
+                  the construction and allied industries. Today the Chamber brings together <strong className="text-ink">30+ members from 7 states</strong>, with a vision
+                  to establish chapters in every state.
                 </p>
                 <p>
                   The Chamber works as a bridge between the industry and Government departments — raising members&apos;

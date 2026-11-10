@@ -8,7 +8,7 @@ import { ArrowRight, ChevronRight } from "lucide-react";
 const INTERVAL = 6000;
 const FIELD_INTERVAL = 3000;
 
-const trustPoints = ["Members across 7 states", "Built by 30+ founding members"];
+const trustPoints = ["30+ members from 7 states", "One unified industry voice"];
 
 // Full-bleed photo slider. The hero copy is passed in and sits bottom-left;
 // the side panel (trust points, members card, sliding "we represent" card) sits bottom-right.
@@ -78,7 +78,7 @@ export default function HeroCarousel({ children }: { children: ReactNode }) {
             <div className="flex flex-col justify-between py-1 pl-2 pr-2">
               <div>
                 <p className="text-3xl font-bold leading-none">30+</p>
-                <p className="mt-1.5 text-xs text-white/75">Founding members</p>
+                <p className="mt-1.5 text-xs text-white/75">Members from 7 states</p>
                 <span className="tricolor mt-3 block h-1 w-12 rounded-full" />
               </div>
               <a href="#join" className="group mt-4 flex items-center gap-1.5 text-sm font-semibold text-white transition hover:text-saffron">

@@ -37,8 +37,9 @@ export const nav = [
 ];
 
 export const stats = [
-  { value: "7", label: "State Members" },
-  { value: "30+", label: "Founding Members" },
+  // Read together: "30+ Members from 7 States"
+  { value: "30+", label: "Members" },
+  { value: "7", label: "States" },
   { value: "1", label: "Unified Industry Voice" },
   { value: "Pan-India", label: "Chapter Vision" },
 ];
@@ -173,6 +174,7 @@ export const officeBearers: Person[] = [
     name: "Pawan Garg",
     role: "National Vice President",
     org: "Chairman, Alstone Industries Pvt. Ltd. & Reynobond India",
+    photo: leaderPhoto("pawan-garg", 0.5, 0.3),
     bio: [
       "Pawan Garg is an entrepreneur with over 37 years of experience in the building materials and glass industries.",
       "He is the Chairman of Alstone Industries Pvt. Ltd. and Reynobond India. His work spans the development and manufacture of building material solutions, including Wood Composite Panels (WPC), silicone sealants, Aluminium Composite Panels (ACP) and High-Pressure Laminates (HPL).",
@@ -263,7 +265,7 @@ export const nationalExecutive: Person[] = [
   { slug: "manoj-kumar", name: "Manoj Kumar", role: "National Executive Committee" },
 ];
 
-// Placeholder state chapters (the site says "7 state members"); replace with real chapter details.
+// Placeholder state chapters (the site says "30+ members from 7 states"); replace with real chapter details.
 export const chapters = Array.from({ length: 7 }, () => ({
   state: "State",
   head: "Chapter Head",
@@ -315,7 +317,7 @@ export const news = [
     category: "Chamber News",
     date: "October 2026",
     slug: "icci-founding-members",
-    title: "ICCI brings together 7 state members and 30+ founding members",
+    title: "ICCI brings together 30+ members from 7 states",
     photo: photo("1521791136064-7986c2920216", 1000),
     excerpt: "The Chamber begins its journey as a unified platform for the construction and allied industries.",
   },
