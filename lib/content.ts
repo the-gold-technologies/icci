@@ -241,11 +241,11 @@ export const nationalExecutive: Person[] = [
   },
   { slug: "amit-pasricha", name: "Amit Pasricha", role: "National Executive Committee" },
   {
-    slug: "suneet-wattal",
-    name: "Suneet Wattal",
+    slug: "suneel-wattal",
+    name: "Suneel Wattal",
     role: "National Executive Committee",
     org: "Freelance Consultant – PMC, IT & Strategy",
-    photo: leaderPhoto("suneet-wattal", 0.59, 0.27),
+    photo: leaderPhoto("suneel-wattal", 0.59, 0.27),
   },
   {
     slug: "pradeep-singh",
