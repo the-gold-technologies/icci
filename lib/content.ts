@@ -232,7 +232,13 @@ export const nationalExecutive: Person[] = [
     photo: leaderPhoto("atul-kapur", 0.5, 0.34),
   },
   { slug: "praveen-mittal", name: "Praveen Mittal", role: "National Executive Committee" },
-  { slug: "sumer-singh", name: "Sumer Singh", role: "National Executive Committee" },
+  {
+    slug: "sumer-singh",
+    name: "Sumer Singh",
+    role: "National Executive Committee",
+    org: "CMD, Aastha Contracts India Pvt. Ltd.",
+    photo: leaderPhoto("sumer-singh", 0.49, 0.29),
+  },
   { slug: "amit-pasricha", name: "Amit Pasricha", role: "National Executive Committee" },
   {
     slug: "suneet-wattal",
