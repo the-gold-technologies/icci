@@ -53,7 +53,7 @@ export default function ContactPage() {
                 <div className="overflow-hidden rounded-2xl border border-zinc-200">
                   <iframe
                     title="ICCI office location"
-                    src="https://maps.google.com/maps?q=New%20Delhi&z=12&output=embed"
+                    src="https://maps.google.com/maps?q=PHD%20House%2C%204%2F2%20August%20Kranti%20Marg%2C%20Siri%20Institutional%20Area%2C%20Hauz%20Khas%2C%20New%20Delhi%20110016&z=16&output=embed"
                     className="h-64 w-full grayscale"
                     loading="lazy"
                   />

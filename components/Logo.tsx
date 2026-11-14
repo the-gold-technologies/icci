@@ -33,7 +33,7 @@ export function LogoLockup({ className, priority = false }: { className?: string
   return (
     <Image
       src="/logo/icci-logo.webp"
-      alt="Indian Chamber of Construction Industry – Collaborate • Innovate • Build a Better India"
+      alt="Indian Chamber of Construction Industry – Collaborate • Innovate • Transform"
       {...LOCKUP}
       loading={priority ? "eager" : undefined}
       fetchPriority={priority ? "high" : undefined}

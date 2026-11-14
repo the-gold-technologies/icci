@@ -14,13 +14,14 @@ export const metadata: Metadata = {
 const byRole = (...roles: string[]) => officeBearers.filter((p) => roles.includes(p.role));
 const president = byRole("National President");
 const vicePresidents = byRole("National Vice President");
-const secretaryTreasurer = byRole("National General Secretary", "National Treasurer");
+const secretaryTreasurer = byRole("National General Secretary", "National Joint Secretary", "National Treasurer");
 
 // Letterhead-style roster at the top of the page: the hierarchy at a glance, each name jumps to its profile.
 const roster = [
   { label: "National President", people: president },
   { label: "National Vice Presidents", people: vicePresidents },
   { label: "National General Secretary", people: byRole("National General Secretary") },
+  { label: "National Joint Secretary", people: byRole("National Joint Secretary") },
   { label: "National Treasurer", people: byRole("National Treasurer") },
 ];
 
@@ -120,7 +121,7 @@ function WideCard({ person, index = 0, featured = false }: { person: Person; ind
   );
 }
 
-/** Compact photo-on-top card for the National Executive Committee (5 per row = two full rows). */
+/** Compact photo-on-top card for the National Executive Committee (5 per row). */
 function MemberCard({ person, index }: { person: Person; index: number }) {
   return (
     <article id={person.slug} data-reveal style={delay(`${(index % 5) * 80}ms`)} className="flex scroll-mt-28 flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white">
@@ -149,7 +150,7 @@ export default function LeadershipPage() {
 
         {/* ───────────── At a glance ───────────── */}
         <section className={`${section} border-b border-zinc-200 bg-cream`}>
-          <div className={`${container} grid gap-8 sm:grid-cols-2 lg:grid-cols-[repeat(4,auto)_1.6fr] lg:justify-between`}>
+          <div className={`${container} grid gap-8 sm:grid-cols-2 lg:grid-cols-[repeat(5,auto)_1.6fr] lg:justify-between`}>
             {roster.map((r, i) => (
               <div key={r.label} data-reveal style={delay(`${i * 80}ms`)}>
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-saffron">{r.label}</p>
@@ -164,7 +165,7 @@ export default function LeadershipPage() {
                 </ul>
               </div>
             ))}
-            <div data-reveal style={delay("320ms")} className="sm:col-span-2 lg:col-span-1">
+            <div data-reveal style={delay("400ms")} className="sm:col-span-2 lg:col-span-1">
               <p className="text-[11px] font-semibold uppercase tracking-wide text-india-green">National Executive Committee</p>
               <ul className="mt-2 grid grid-cols-2 gap-x-6 gap-y-1">
                 {nationalExecutive.map((p) => (
@@ -203,11 +204,11 @@ export default function LeadershipPage() {
           </div>
         </section>
 
-        {/* ───────────── General Secretary & Treasurer: two across ───────────── */}
+        {/* ───────────── General Secretary, Joint Secretary & Treasurer: three across ───────────── */}
         <section className={section}>
           <div className={container}>
-            <TierHead label="General Secretary & Treasurer" title="Running the Chamber day to day" />
-            <div className="mt-8 grid gap-5 lg:grid-cols-2">
+            <TierHead label="Secretaries & Treasurer" title="Running the Chamber day to day" />
+            <div className="mt-8 grid gap-5 lg:grid-cols-3">
               {secretaryTreasurer.map((p, i) => (
                 <WideCard key={p.slug} person={p} index={i} />
               ))}
@@ -215,7 +216,7 @@ export default function LeadershipPage() {
           </div>
         </section>
 
-        {/* ───────────── National Executive Committee: 5 across, two full rows ───────────── */}
+        {/* ───────────── National Executive Committee: 5 across ───────────── */}
         <section className={`${section} bg-concrete`}>
           <div className={container}>
             <TierHead label="National Executive Committee" title="Industry leaders from across the sector" green />

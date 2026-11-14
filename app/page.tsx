@@ -37,7 +37,7 @@ export default function Home() {
           <HeroCarousel>
             <p className="enter flex items-center gap-3 text-xs font-medium uppercase tracking-[0.2em] text-white/85" style={afterSplash(150)}>
               <span className="enter-draw tricolor inline-block h-1 w-8 rounded-full" style={afterSplash(300)} />
-              Collaborate • Innovate • Build a Better India
+              Collaborate • Innovate • Transform
             </p>
             <h1 className="enter mt-5 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl" style={afterSplash(300)}>
               The unified voice of India&apos;s <span className="text-saffron">construction</span> industry.

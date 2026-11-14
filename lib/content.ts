@@ -198,6 +198,18 @@ export const officeBearers: Person[] = [
     ],
   },
   {
+    slug: "pradeep-singh",
+    name: "Pradeep Singh",
+    role: "National Joint Secretary",
+    org: "Director, Swaraj Infracon Pvt. Ltd.",
+    photo: leaderPhoto("pradeep-singh", 0.51, 0.33),
+    bio: [
+      "Pradeep Singh is a young construction industry professional in civil construction and infrastructure development. At just 30 years of age, he is among the youngest leaders in the sector.",
+      "He is the Director of Swaraj Infracon Pvt. Ltd. Through the company, he has worked on projects across the country, leading them from planning to completion with a strong focus on quality and timely delivery.",
+      "Mr Singh is also the Centre Chairman of the Builders Association of India. As Founding Member and Joint Secretary of ICCI, he is focused on industry collaboration, knowledge sharing, professional development and engagement with government and policymakers.",
+    ],
+  },
+  {
     slug: "umesh-tanwar",
     name: "Umesh Tanwar",
     role: "National Treasurer",
@@ -246,17 +258,6 @@ export const nationalExecutive: Person[] = [
     role: "National Executive Committee",
     org: "Freelance Consultant – PMC, IT & Strategy",
     photo: leaderPhoto("suneel-wattal", 0.59, 0.27),
-  },
-  {
-    slug: "pradeep-singh",
-    name: "Pradeep Singh",
-    role: "National Executive Committee",
-    org: "Swaraj Infracon Pvt. Ltd.",
-    photo: leaderPhoto("pradeep-singh", 0.51, 0.33),
-    bio: [
-      "Swaraj Infracon Pvt. Ltd. is a registered contractor of C.P.W.D., undertaking civil engineering projects involving RCC structures, buildings, industrial structures, and sanitary and electrical installations, along with site development works such as drainage, boundary walls, roads, horticulture and water harvesting.",
-      "The company undertakes contracts for government agencies across Delhi, Uttar Pradesh, West Bengal, Rajasthan, Jharkhand, Uttarakhand, Odisha, Bihar and Himachal Pradesh.",
-    ],
   },
   {
     slug: "dheeraj-sahni",
@@ -354,7 +355,7 @@ export const news = [
 ].map((n) => ({ ...n, body: placeholderBody }));
 
 export const contact = {
-  address: "ICCI Secretariat, PHD House, 4/2 August Kranti Marg, Siri Institutional Area, Hauz Khas, New Delhi 110016",
+  address: "ICCI Secretariat, 3rd Floor, PHD House, 4/2 August Kranti Marg, Siri Institutional Area, Hauz Khas, New Delhi 110016",
   phone: "+91 93157 00465",
   email: "contact@icci.co.in",
 };
