@@ -2,19 +2,32 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { afterSplash, delay } from "./ui";
-import { fields, heroSlides } from "@/lib/content";
 import { ArrowRight, ChevronRight } from "lucide-react";
 
 const INTERVAL = 6000;
 const FIELD_INTERVAL = 3000;
 
-const trustPoints = ["30+ members from 7 states", "One unified industry voice"];
+type Photo = { image: string; imageAlt: string };
+
+/** Home › Hero section as saved in the CMS (the headline copy is rendered by the page as `children`). */
+export type HeroSlides = {
+  slides: (Photo & { tag: string; title: string; text: string })[];
+  fields: (Photo & { label: string })[];
+  fieldsLabel: string;
+  trustPoints: string[];
+  membersValue: string;
+  membersLabel: string;
+  membersCtaLabel: string;
+  membersCtaLink: string;
+};
 
 // Full-bleed photo slider. The hero copy is passed in and sits bottom-left;
 // the side panel (trust points, members card, sliding "we represent" card) sits bottom-right.
-export default function HeroCarousel({ children }: { children: ReactNode }) {
+export default function HeroCarousel({ children, hero }: { children: ReactNode; hero: HeroSlides }) {
+  const list = hero.slides;
+  const fList = hero.fields;
   const [active, setActive] = useState(0);
-  const count = heroSlides.length;
+  const count = Math.max(list.length, 1);
   const [field, setField] = useState(0);
 
   useEffect(() => {
@@ -23,9 +36,10 @@ export default function HeroCarousel({ children }: { children: ReactNode }) {
   }, [active, count]);
 
   useEffect(() => {
-    const id = setTimeout(() => setField((i) => (i + 1) % fields.length), FIELD_INTERVAL);
+    if (fList.length === 0) return;
+    const id = setTimeout(() => setField((i) => (i + 1) % fList.length), FIELD_INTERVAL);
     return () => clearTimeout(id);
-  }, [field]);
+  }, [field, fList.length]);
 
   return (
     <div
@@ -35,16 +49,16 @@ export default function HeroCarousel({ children }: { children: ReactNode }) {
     >
       {/* On load the photo eases in from a slight zoom as the splash curtain lifts */}
       <div className="enter-settle absolute inset-0" style={delay("calc(var(--after-splash) * 0.8)")}>
-        {heroSlides.map((s, i) => (
+        {list.map((s, i) => (
           <div
-            key={s.title}
+            key={i}
             className={`absolute inset-0 transition-opacity duration-1000 ${i === active ? "opacity-100" : "opacity-0"}`}
             aria-hidden={i !== active}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={s.photo}
-              alt={s.title}
+              src={s.image}
+              alt={s.imageAlt}
               loading={i === 0 ? "eager" : "lazy"}
               className={`h-full w-full object-cover transition-transform ease-out ${i === active ? "scale-110 duration-[7000ms]" : "scale-100 duration-0"}`}
             />
@@ -64,8 +78,8 @@ export default function HeroCarousel({ children }: { children: ReactNode }) {
 
         <div className="enter relative flex w-full flex-col gap-5 lg:w-auto lg:items-end" style={afterSplash(550)}>
           <ul className="hidden space-y-1.5 text-right text-sm font-medium text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.6)] lg:block">
-            {trustPoints.map((t) => (
-              <li key={t} className="flex items-center justify-end gap-2">
+            {hero.trustPoints.map((t, i) => (
+              <li key={i} className="flex items-center justify-end gap-2">
                 {t}
                 <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-saffron" fill="none" stroke="currentColor" strokeWidth={2.5}>
                   <path d="M5 12l5 5L19 7" />
@@ -77,52 +91,52 @@ export default function HeroCarousel({ children }: { children: ReactNode }) {
           <div className="hidden items-stretch gap-4 rounded-2xl border border-white/20 bg-white/10 p-3 backdrop-blur-md lg:flex">
             <div className="flex flex-col justify-between py-1 pl-2 pr-2">
               <div>
-                <p className="text-3xl font-bold leading-none">30+</p>
-                <p className="mt-1.5 text-xs text-white/75">Members from 7 states</p>
+                <p className="text-3xl font-bold leading-none">{hero.membersValue}</p>
+                <p className="mt-1.5 text-xs text-white/75">{hero.membersLabel}</p>
                 <span className="tricolor mt-3 block h-1 w-12 rounded-full" />
               </div>
-              <a href="#join" className="group mt-4 flex items-center gap-1.5 text-sm font-semibold text-white transition hover:text-saffron">
-                Join them
+              <a href={hero.membersCtaLink} className="group mt-4 flex items-center gap-1.5 text-sm font-semibold text-white transition hover:text-saffron">
+                {hero.membersCtaLabel}
                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" strokeWidth={2.25} aria-hidden />
               </a>
             </div>
 
             <div className="relative h-32 w-48 overflow-hidden rounded-xl" aria-label="Who we represent">
-              {fields.map((f, i) => (
+              {fList.map((f, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  key={f.label}
-                  src={f.photo}
-                  alt={f.label}
+                  key={i}
+                  src={f.image}
+                  alt={f.imageAlt}
                   className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${i === field ? "opacity-100" : "opacity-0"}`}
                 />
               ))}
               <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
               <button
-                onClick={() => setField((i) => (i + 1) % fields.length)}
+                onClick={() => setField((i) => (i + 1) % Math.max(fList.length, 1))}
                 aria-label="Next field"
                 className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-saffron text-white transition hover:scale-110"
               >
                 <ChevronRight className="h-4 w-4" strokeWidth={2.5} aria-hidden />
               </button>
               <span className="absolute inset-x-3 bottom-2.5">
-                <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">We represent</span>
+                <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">{hero.fieldsLabel}</span>
                 <span key={field} className="block animate-[rise_0.5s_ease-out_both] truncate text-sm font-semibold">
-                  {fields[field].label}
+                  {fList[field]?.label}
                 </span>
               </span>
               <span className="absolute left-3 top-3 flex gap-1">
-                {fields.map((f, i) => (
-                  <span key={f.label} className={`h-1 rounded-full transition-all ${i === field ? "w-4 bg-white" : "w-1.5 bg-white/50"}`} />
+                {fList.map((_, i) => (
+                  <span key={i} className={`h-1 rounded-full transition-all ${i === field ? "w-4 bg-white" : "w-1.5 bg-white/50"}`} />
                 ))}
               </span>
             </div>
           </div>
 
           <div className="flex gap-2 lg:absolute lg:-bottom-7 lg:right-0">
-            {heroSlides.map((s, i) => (
+            {list.map((s, i) => (
               <button
-                key={s.title}
+                key={i}
                 onClick={() => setActive(i)}
                 aria-label={`Show slide ${i + 1}: ${s.title}`}
                 className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? "w-8 bg-saffron" : "w-4 bg-white/40 hover:bg-white/70"}`}

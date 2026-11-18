@@ -1,73 +1,60 @@
-import type { Metadata } from "next";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import { ContactForm } from "@/components/Forms";
-import { afterSplash, container, delay } from "@/components/ui";
-import { contact, photos } from "@/lib/content";
+import { container, PageBanner } from "@/components/ui";
+import { getPage, getSite } from "@/lib/content";
+import { headingTag, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact – ICCI",
-  description: "Get in touch with the Indian Chamber of Construction Industry.",
-};
+export const generateMetadata = () => pageMetadata("contact", "/contact");
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const [page, site] = await Promise.all([getPage("contact"), getSite()]);
+
+  const s = page.sections;
+  const details = s.ContactDetailsSection;
+  const formSec = s.ContactFormSection;
+
+  // Address, phone and email are the global contact details (SEO › Global), shared with the footer
+  const rows = [
+    { label: details.addressLabel, value: site.address },
+    { label: details.phoneLabel, value: site.phone, href: site.phone ? `tel:${site.phone.replace(/\s/g, "")}` : undefined },
+    { label: details.emailLabel, value: site.email, href: site.email ? `mailto:${site.email}` : undefined },
+  ].filter((r) => r.value);
+
   return (
-    <>
-      <Header />
-      <main>
-        {/* ───────────── Banner ───────────── */}
-        <section className="relative overflow-hidden text-white">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photos.aboutSite} alt="" className="enter-settle absolute inset-0 h-full w-full object-cover" style={delay("calc(var(--after-splash) * 0.8)")} />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1a0f08]/85 via-[#1a0f08]/55 to-[#1a0f08]/25" />
-          <div className={`${container} relative pb-16 pt-40 lg:pb-20 lg:pt-48`}>
-            <p className="enter flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/85" style={afterSplash(150)}>
-              <span className="enter-draw tricolor inline-block h-1 w-8 rounded-full" style={afterSplash(300)} />
-              Contact Us
-            </p>
-            <h1 className="enter mt-5 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl" style={afterSplash(300)}>
-              Get in touch with <span className="text-saffron">ICCI</span>.
-            </h1>
-          </div>
-        </section>
+    <main>
+      <JsonLd data={page.seo?.schema} />
+      <PageBanner hero={s.ContactHeroSection} as={headingTag(page.seo?.headingOptions)} />
 
-        {/* ───────────── Contact ───────────── */}
-        <section id="contact" className="bg-cream py-16 text-ink lg:py-24">
-          <div className={container}>
-            <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
-              <div className="space-y-6">
-                {[
-                  { k: "Office Address", v: contact.address },
-                  { k: "Phone", v: contact.phone, href: `tel:${contact.phone.replace(/\s/g, "")}` },
-                  { k: "Email", v: contact.email, href: `mailto:${contact.email}` },
-                ].map((c) => (
-                  <div key={c.k} className="border-l-2 border-saffron pl-5">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-steel">{c.k}</p>
-                    {c.href ? (
-                      <a href={c.href} className="mt-1 block text-lg hover:text-saffron">{c.v}</a>
-                    ) : (
-                      <p className="mt-1 text-lg">{c.v}</p>
-                    )}
-                  </div>
-                ))}
-                <div className="overflow-hidden rounded-2xl border border-zinc-200">
-                  <iframe
-                    title="ICCI office location"
-                    src="https://maps.google.com/maps?q=PHD%20House%2C%204%2F2%20August%20Kranti%20Marg%2C%20Siri%20Institutional%20Area%2C%20Hauz%20Khas%2C%20New%20Delhi%20110016&z=16&output=embed"
-                    className="h-64 w-full grayscale"
-                    loading="lazy"
-                  />
+      {/* ───────────── Contact ───────────── */}
+      <section id="contact" className="bg-cream py-16 text-ink lg:py-24">
+        <div className={container}>
+          <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
+            <div className="space-y-6">
+              {rows.map((r) => (
+                <div key={r.label} className="border-l-2 border-saffron pl-5">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-steel">{r.label}</p>
+                  {r.href ? (
+                    <a href={r.href} className="mt-1 block text-lg hover:text-saffron">
+                      {r.value}
+                    </a>
+                  ) : (
+                    <p className="mt-1 text-lg">{r.value}</p>
+                  )}
                 </div>
-              </div>
-              <div className="rounded-3xl bg-white p-8 shadow-sm lg:p-10">
-                <h3 className="mb-6 text-xl font-bold text-ink">Send us an enquiry</h3>
-                <ContactForm />
-              </div>
+              ))}
+              {details.mapEmbedUrl && (
+                <div className="overflow-hidden rounded-2xl border border-zinc-200">
+                  <iframe title={details.mapTitle} src={details.mapEmbedUrl} className="h-64 w-full grayscale" loading="lazy" />
+                </div>
+              )}
+            </div>
+            <div className="rounded-3xl bg-white p-8 shadow-sm lg:p-10">
+              <h2 className="mb-6 text-xl font-bold text-ink">{formSec.formTitle}</h2>
+              <ContactForm copy={formSec} email={site.email} />
             </div>
           </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+        </div>
+      </section>
+    </main>
   );
 }

@@ -2,12 +2,20 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { news } from "@/lib/content";
+import type { Article } from "@/lib/content";
 import { ArrowRight } from "lucide-react";
 
-type Article = (typeof news)[number];
-
-const ALL = "All";
+/** News & Articles › News Browser section as saved in the CMS. */
+export type NewsBrowserCopy = {
+  allLabel: string;
+  latestBadge: string;
+  readFullStoryLabel: string;
+  browseTitle: string;
+  shareTitle: string;
+  shareText: string;
+  shareCtaLabel: string;
+  shareCtaLink: string;
+};
 
 // "October 2026" -> { month: "Oct", year: "2026" } for the date column
 function splitDate(date: string) {
@@ -15,7 +23,8 @@ function splitDate(date: string) {
   return { month: month.slice(0, 3), year };
 }
 
-export default function NewsBrowser({ items }: { items: Article[] }) {
+export default function NewsBrowser({ items, copy }: { items: Article[]; copy: NewsBrowserCopy }) {
+  const ALL = copy.allLabel;
   const [active, setActive] = useState(ALL);
   const categories = [ALL, ...Array.from(new Set(items.map((n) => n.category)))];
   const count = (c: string) => (c === ALL ? items.length : items.filter((n) => n.category === c).length);
@@ -55,9 +64,9 @@ export default function NewsBrowser({ items }: { items: Article[] }) {
           >
             <div className="relative aspect-[16/10] overflow-hidden bg-zinc-200 md:aspect-auto md:min-h-[340px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={lead.photo} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+              <img src={lead.img} alt={lead.imgAlt || ""} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
               <span className="absolute left-4 top-4 rounded-full bg-saffron px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white">
-                {active === ALL ? "Latest" : active}
+                {active === ALL ? copy.latestBadge : active}
               </span>
             </div>
             <div className="flex flex-col p-7 lg:p-9">
@@ -70,7 +79,7 @@ export default function NewsBrowser({ items }: { items: Article[] }) {
               </h2>
               <p className="mt-3 leading-relaxed text-steel">{lead.excerpt}</p>
               <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-ink">
-                Read the full story
+                {copy.readFullStoryLabel}
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-white transition group-hover:translate-x-1 group-hover:bg-saffron">
                   <ArrowRight className="h-4 w-4" strokeWidth={2.25} aria-hidden />
                 </span>
@@ -98,7 +107,7 @@ export default function NewsBrowser({ items }: { items: Article[] }) {
                     </div>
                     <div className="col-span-2 aspect-[16/9] overflow-hidden rounded-xl bg-zinc-200 sm:col-span-1">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={n.photo} alt="" loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                      <img src={n.img} alt={n.imgAlt || ""} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                     </div>
                   </Link>
                 </li>
@@ -111,7 +120,7 @@ export default function NewsBrowser({ items }: { items: Article[] }) {
       {/* Sidebar */}
       <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
         <div className="rounded-2xl border border-zinc-200 bg-white p-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-steel">Browse by topic</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-steel">{copy.browseTitle}</p>
           <ul className="mt-4 space-y-1">
             {categories.map((c) => (
               <li key={c}>
@@ -131,12 +140,12 @@ export default function NewsBrowser({ items }: { items: Article[] }) {
 
         <div className="relative overflow-hidden rounded-2xl bg-ink p-6 text-white">
           <span className="tricolor absolute inset-x-0 top-0 h-1" />
-          <h3 className="text-lg font-semibold">Have news to share?</h3>
+          <h3 className="text-lg font-semibold">{copy.shareTitle}</h3>
           <p className="mt-2 text-sm leading-relaxed text-white/70">
-            Members can send project milestones, event reports and industry updates for the Chamber to publish.
+            {copy.shareText}
           </p>
-          <Link href="/contact" className="group mt-5 inline-flex items-center gap-2 text-sm font-semibold text-saffron hover:text-white">
-            Contact the secretariat
+          <Link href={copy.shareCtaLink} className="group mt-5 inline-flex items-center gap-2 text-sm font-semibold text-saffron hover:text-white">
+            {copy.shareCtaLabel}
             <span className="grid h-7 w-7 place-items-center rounded-full bg-saffron text-white transition group-hover:translate-x-1 group-hover:bg-white group-hover:text-ink">
               <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden />
             </span>

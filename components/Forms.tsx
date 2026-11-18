@@ -1,140 +1,148 @@
 "use client";
 
-import { useState, type FormEvent, type ReactNode } from "react";
-import { membershipCategories } from "@/lib/content";
+import { useState, type FormEvent } from "react";
+
+// Enquiry forms. Labels, placeholders, field order, button and success copy all come from the CMS
+// (Contact › Contact Form, Membership › Membership Enquiry); only each field's input type is fixed here,
+// because it decides validation and what /api/submissions stores.
+
+export type FormField = { name: string; label: string; placeholder: string };
+export type FormCopy = {
+  fields: FormField[];
+  submitLabel: string;
+  successTitle: string;
+  successText: string;
+  resetLabel: string;
+};
+
+type InputKind = "text" | "email" | "tel" | "select" | "textarea";
+const INPUT: Record<string, { kind: InputKind; required: boolean; wide?: boolean }> = {
+  name: { kind: "text", required: true },
+  organisation: { kind: "text", required: true },
+  email: { kind: "email", required: true },
+  phone: { kind: "tel", required: true },
+  category: { kind: "select", required: true },
+  state: { kind: "text", required: true },
+  subject: { kind: "text", required: true, wide: true },
+  message: { kind: "textarea", required: false, wide: true },
+};
 
 const input =
   "w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-sm text-ink outline-none transition placeholder:text-zinc-400 focus:border-saffron focus:ring-2 focus:ring-saffron/20";
 
-function Field({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <label className="block">
-      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-steel">{label}</span>
-      {children}
-    </label>
-  );
-}
-
-// TODO: wire submissions to the backend / CMS endpoint once available.
-function useSubmit() {
+function useSubmit(formType: "membership" | "contact") {
   const [sent, setSent] = useState(false);
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSent(true);
-    e.currentTarget.reset();
+    setSubmitting(true);
+    setFailed(false);
+
+    const form = e.currentTarget;
+    const data: Record<string, string> = { formType };
+    new FormData(form).forEach((val, key) => {
+      if (typeof val === "string") data[key] = val.trim();
+    });
+
+    try {
+      const res = await fetch("/api/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("Failed to submit");
+      setSent(true);
+      form.reset();
+    } catch {
+      setFailed(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
-  return { sent, setSent, onSubmit };
+
+  return { sent, setSent, submitting, failed, onSubmit };
 }
 
-function Success({ title, onReset }: { title: string; onReset: () => void }) {
+function Success({ copy, onReset }: { copy: FormCopy; onReset: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 p-10 text-center">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-india-green text-white">
-        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2.5}>
+        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden>
           <path d="M5 12l5 5L19 7" />
         </svg>
       </div>
-      <p className="mt-4 text-lg font-semibold text-ink">{title}</p>
-      <p className="mt-1 text-sm text-steel">Our team will get in touch with you shortly.</p>
+      <p className="mt-4 text-lg font-semibold text-ink">{copy.successTitle}</p>
+      <p className="mt-1 text-sm text-steel">{copy.successText}</p>
       <button onClick={onReset} className="mt-6 text-sm font-semibold text-saffron hover:underline">
-        Submit another response
+        {copy.resetLabel}
       </button>
     </div>
   );
 }
 
-export function MembershipForm() {
-  const { sent, setSent, onSubmit } = useSubmit();
-  if (sent) return <Success title="Thank you for your interest in ICCI" onReset={() => setSent(false)} />;
+function EnquiryForm({
+  formType,
+  copy,
+  options,
+  email,
+}: {
+  formType: "membership" | "contact";
+  copy: FormCopy;
+  options: string[];
+  email: string | null;
+}) {
+  const { sent, setSent, submitting, failed, onSubmit } = useSubmit(formType);
+  if (sent) return <Success copy={copy} onReset={() => setSent(false)} />;
+
   return (
     <form onSubmit={onSubmit} className="grid gap-5 sm:grid-cols-2">
-      <Field label="Full Name">
-        <input required name="name" className={input} placeholder="Your name" />
-      </Field>
-      <Field label="Organisation / Company">
-        <input required name="organisation" className={input} placeholder="Company name" />
-      </Field>
-      <Field label="Email">
-        <input required type="email" name="email" className={input} placeholder="you@company.com" />
-      </Field>
-      <Field label="Phone">
-        <input required type="tel" name="phone" className={input} placeholder="+91" />
-      </Field>
-      <Field label="Membership Category">
-        <select required name="category" defaultValue="" className={input}>
-          <option value="" disabled>
-            Select a category
-          </option>
-          {membershipCategories.map((c) => (
-            <option key={c.title}>{c.title}</option>
-          ))}
-        </select>
-      </Field>
-      <Field label="State">
-        <input required name="state" className={input} placeholder="e.g. Uttar Pradesh" />
-      </Field>
+      {copy.fields.map((f) => {
+        const spec = INPUT[f.name];
+        if (!spec) return null;
+        return (
+          <label key={f.name} className={`block ${spec.wide ? "sm:col-span-2" : ""}`}>
+            <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-steel">{f.label}</span>
+            {spec.kind === "select" ? (
+              <select required={spec.required} name={f.name} defaultValue="" className={input}>
+                <option value="" disabled>
+                  {f.placeholder}
+                </option>
+                {options.map((o) => (
+                  <option key={o}>{o}</option>
+                ))}
+              </select>
+            ) : spec.kind === "textarea" ? (
+              <textarea required={spec.required} name={f.name} rows={4} className={input} placeholder={f.placeholder} />
+            ) : (
+              <input required={spec.required} type={spec.kind} name={f.name} className={input} placeholder={f.placeholder} />
+            )}
+          </label>
+        );
+      })}
+      {failed && (
+        <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700 sm:col-span-2">
+          Unable to submit right now. Please try again{email ? ` or reach us at ${email}` : ""}.
+        </p>
+      )}
       <div className="sm:col-span-2">
-        <Field label="Tell us about your business">
-          <textarea name="message" rows={3} className={input} placeholder="Nature of work, experience, areas of operation…" />
-        </Field>
-      </div>
-      <div className="sm:col-span-2">
-        <button className="w-full rounded-full bg-saffron px-8 py-3.5 font-semibold text-white transition hover:bg-india-green sm:w-auto">
-          Submit Membership Enquiry
+        <button
+          disabled={submitting}
+          className="w-full rounded-full bg-saffron px-8 py-3.5 font-semibold text-white transition hover:bg-india-green disabled:opacity-50 sm:w-auto"
+        >
+          {submitting ? "Sending…" : copy.submitLabel}
         </button>
       </div>
     </form>
   );
 }
 
-export function SuggestionForm() {
-  const { sent, setSent, onSubmit } = useSubmit();
-  if (sent) return <Success title="Thank you for your suggestion" onReset={() => setSent(false)} />;
-  return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Name">
-          <input required name="name" className={input} placeholder="Your name" />
-        </Field>
-        <Field label="Organisation">
-          <input name="organisation" className={input} placeholder="Company / body" />
-        </Field>
-      </div>
-      <Field label="Contact Details">
-        <input required name="contact" className={input} placeholder="Email or phone number" />
-      </Field>
-      <Field label="Suggestion / Feedback">
-        <textarea required name="suggestion" rows={4} className={input} placeholder="Share your idea, concern or feedback…" />
-      </Field>
-      <button className="w-full rounded-full bg-saffron px-8 py-3.5 font-semibold text-white transition hover:bg-india-green">
-        Submit Suggestion
-      </button>
-    </form>
-  );
+/** Membership enquiry; `categories` = Membership › Categories titles. */
+export function MembershipForm({ copy, categories, email }: { copy: FormCopy; categories: string[]; email: string | null }) {
+  return <EnquiryForm formType="membership" copy={copy} options={categories} email={email} />;
 }
 
-export function ContactForm() {
-  const { sent, setSent, onSubmit } = useSubmit();
-  if (sent) return <Success title="Your message has been sent" onReset={() => setSent(false)} />;
-  return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Name">
-          <input required name="name" className={input} placeholder="Your name" />
-        </Field>
-        <Field label="Email">
-          <input required type="email" name="email" className={input} placeholder="you@company.com" />
-        </Field>
-      </div>
-      <Field label="Subject">
-        <input required name="subject" className={input} placeholder="How can we help?" />
-      </Field>
-      <Field label="Message">
-        <textarea required name="message" rows={4} className={input} placeholder="Write your message…" />
-      </Field>
-      <button className="w-full rounded-full bg-saffron px-8 py-3.5 font-semibold text-white transition hover:bg-india-green">
-        Send Enquiry
-      </button>
-    </form>
-  );
+export function ContactForm({ copy, email }: { copy: FormCopy; email: string | null }) {
+  return <EnquiryForm formType="contact" copy={copy} options={[]} email={email} />;
 }

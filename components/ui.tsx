@@ -1,5 +1,6 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
+import type { HeadingTag } from "@/lib/seo";
 
 export const container = "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
 
@@ -18,28 +19,59 @@ export function Eyebrow({ children }: { children: ReactNode }) {
   );
 }
 
-/** Photo banner at the top of inner pages (sits under the transparent navbar). */
-export function PageBanner({ photo, eyebrow, children }: { photo: string; eyebrow: string; children: ReactNode }) {
+/** Hero headline as saved by every CMS hero editor: "<headline> <scriptAccent><headlineSuffix>". */
+export type HeroCopy = {
+  tagline: string;
+  headline: string;
+  scriptAccent: string;
+  headlineSuffix: string;
+  image: string;
+  imageAlt: string;
+};
+
+export function HeroHeadline({ hero }: { hero: Pick<HeroCopy, "headline" | "scriptAccent" | "headlineSuffix"> }) {
+  return (
+    <>
+      {hero.headline} <span className="text-saffron">{hero.scriptAccent}</span>
+      {hero.headlineSuffix}
+    </>
+  );
+}
+
+/** A heading rendered with the tag chosen in the CMS ("Hero Headline Tag (SEO)"). */
+export function Heading({ as: Tag, ...props }: { as: HeadingTag } & ComponentProps<"h1">) {
+  return <Tag {...props} />;
+}
+
+/** Photo banner at the top of inner pages (sits under the transparent navbar). `as` = CMS heading tag. */
+export function PageBanner({ hero, as }: { hero: HeroCopy; as: HeadingTag }) {
   return (
     <section className="relative overflow-hidden text-white">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={photo} alt="" className="enter-settle absolute inset-0 h-full w-full object-cover" style={delay("calc(var(--after-splash) * 0.8)")} />
+      <img
+        src={hero.image}
+        alt={hero.imageAlt}
+        fetchPriority="high"
+        className="enter-settle absolute inset-0 h-full w-full object-cover"
+        style={delay("calc(var(--after-splash) * 0.8)")}
+      />
       <div className="absolute inset-0 bg-gradient-to-r from-[#1a0f08]/85 via-[#1a0f08]/55 to-[#1a0f08]/25" />
       <div className={`${container} relative pb-16 pt-40 lg:pb-20 lg:pt-48`}>
         <p className="enter flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/85" style={afterSplash(150)}>
           <span className="enter-draw tricolor inline-block h-1 w-8 rounded-full" style={afterSplash(300)} />
-          {eyebrow}
+          {hero.tagline}
         </p>
-        <h1 className="enter mt-5 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl" style={afterSplash(300)}>
-          {children}
-        </h1>
+        <Heading as={as} className="enter mt-5 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl" style={afterSplash(300)}>
+          <HeroHeadline hero={hero} />
+        </Heading>
       </div>
     </section>
   );
 }
 
 /** Native <details> "Read more" toggle: no client JS needed. */
-export function ReadMore({ paragraphs, light = false, children }: { paragraphs: string[]; light?: boolean; children?: ReactNode }) {
+export function ReadMore({ paragraphs, light = false }: { paragraphs: string[]; light?: boolean }) {
+  if (paragraphs.length === 0) return null;
   return (
     <details className="group mt-5">
       <summary
@@ -52,10 +84,9 @@ export function ReadMore({ paragraphs, light = false, children }: { paragraphs: 
         <ChevronDown className="h-4 w-4 transition group-open:rotate-180" strokeWidth={2.25} aria-hidden />
       </summary>
       <div className={`mt-4 space-y-4 leading-relaxed ${light ? "text-white/85" : "text-steel"}`}>
-        {paragraphs.map((p) => (
-          <p key={p.slice(0, 32)}>{p}</p>
+        {paragraphs.map((p, i) => (
+          <p key={i}>{p}</p>
         ))}
-        {children}
       </div>
     </details>
   );
