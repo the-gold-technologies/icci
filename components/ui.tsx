@@ -24,16 +24,16 @@ export type HeroCopy = {
   tagline: string;
   headline: string;
   scriptAccent: string;
-  headlineSuffix: string;
+  headlineSuffix?: string;
   image: string;
   imageAlt: string;
 };
 
-export function HeroHeadline({ hero }: { hero: Pick<HeroCopy, "headline" | "scriptAccent" | "headlineSuffix"> }) {
+export function HeroHeadline({ hero }: { hero: { headline: string; scriptAccent: string; headlineSuffix?: string } }) {
   return (
     <>
       {hero.headline} <span className="text-saffron">{hero.scriptAccent}</span>
-      {hero.headlineSuffix}
+      {hero.headlineSuffix || ""}
     </>
   );
 }
