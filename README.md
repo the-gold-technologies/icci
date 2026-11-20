@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ICCI Website
+
+Official web application for the **Indian Chamber of Construction Industry (ICCI)**.
+
+Built with **Next.js 16 (App Router)**, **TypeScript**, and **Tailwind CSS**. Fetches dynamic content, SEO, and assets directly from the **ICCI CMS** (`icci-cms`).
+
+---
+
+## Features
+
+- **Public Website Pages**:
+  - **Home** (`/`): Dynamic hero slider, key highlights, Chamber introduction, objectives, industry representation, core initiatives, leadership overview, membership overview, latest news stories, and enquiry block.
+  - **About Us** (`/about`): Narrative story, focus areas, mission & vision statements, leadership preview, and state chapter directory.
+  - **Initiatives** (`/initiatives`): Core initiatives, objectives grid, and represented stakeholder disciplines.
+  - **Leadership** (`/leadership`): Interactive leadership roster, tier breakdowns for National President, Vice Presidents, Secretariat, and Executive Committee with profile modals.
+  - **Membership** (`/membership`): Benefits checklist, category tiers, application steps, and enquiry form (`#join`).
+  - **Events** (`/events`): Dynamic upcoming events spotlight and past events archive.
+  - **News & Articles** (`/news` & `/news/[slug]`): Filterable news browser, sidebar categories, full article reading view, and related stories.
+  - **Contact Us** (`/contact`): Secretariat address, phone, email, Google Maps embed, and contact form.
+- **Dynamic SEO & Metadata**:
+  - Global metadata, Open Graph cards, Google Search Console verification, and Schema.org JSON-LD from the CMS.
+  - Per-page SEO meta titles, meta descriptions, target keywords, canonical URLs, and `noindex` rules.
+  - CMS-controlled heading hierarchy (`<h1>`–`<h6>`).
+  - Dynamic XML Sitemap (`/sitemap.xml`) and `robots.txt` (`/robots.txt`).
+- **Interactive Forms**:
+  - General contact enquiries and membership applications.
+  - Submissions are securely forwarded to the CMS inbox and trigger email alerts.
+- **Performance & Cache Revalidation**:
+  - Next.js server-side caching (`force-cache`) with on-demand cache tag revalidation (`/api/revalidate`).
+  - Fast page loads with instant UI updates when changes are saved in the CMS.
+
+---
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Typography**: Google Fonts (Poppins)
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### 1. Prerequisites
+
+- **Node.js** 18.18.0 or higher
+- **npm** 9 or higher
+- **ICCI CMS** running locally (default: `http://localhost:3001`) or deployed
+
+### 2. Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository and enter the directory
+cd icci
+
+# Install dependencies
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Environment Configuration
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file in the root directory:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cp .env.example .env.local
+```
 
-## Learn More
+Configure the environment variables:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+# CMS API endpoint
+CMS_URL="http://localhost:3001"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Shared secret for authenticating revalidation webhooks and form submissions
+CMS_SHARED_SECRET="your-shared-secret-here"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Public canonical website URL (used for canonical tags and sitemaps)
+NEXT_PUBLIC_SITE_URL="https://icci.co.in"
+```
 
-## Deploy on Vercel
+### 4. Running the Application
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Start the development server on port 3000
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## Available Scripts
+
+| Command | Action |
+| :--- | :--- |
+| `npm run dev` | Starts the Next.js development server on port `3000` |
+| `npm run build` | Builds the optimized production bundle |
+| `npm run start` | Runs the built application in production mode |
+| `npm run lint` | Runs ESLint code quality checks |
+
+---
+
+## Architecture & CMS Integration
+
+The website functions as a headless consumer of the ICCI CMS:
+
+- **CMS Client** (`lib/cms.ts`): Makes typed server-side requests to the CMS API (`/api/...`) with automatic tag caching and configurable timeout protection.
+- **Typed Content Fetchers** (`lib/content.ts`): Dedupes requests per render pass and exports typed helpers:
+  - `getSite()`: Global site settings, header/footer copy, and social links.
+  - `getPage(slug)`: Page sections and SEO metadata.
+  - `getLeaders()`: Office bearers and executive committee members.
+  - `getNews()`: Published articles and news items.
+  - `getEvents()`: Upcoming and past event records.
+  - `getNav()`: Navigation menu links, hierarchical dropdowns, and CTA action buttons.
+- **On-Demand Revalidation** (`app/api/revalidate/route.ts`): Receives webhook calls from the CMS whenever content is updated and invalidates matching cache tags (`site`, `page:<slug>`, `leaders`, `news`, `events`).
+
+---
+
+## License
+
+Private and proprietary. Designed and maintained for the Indian Chamber of Construction Industry.

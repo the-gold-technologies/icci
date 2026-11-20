@@ -2,41 +2,52 @@ import Link from "next/link";
 import { LogoLockup } from "./Logo";
 import { SocialRow } from "./Social";
 import { container } from "./ui";
-import { contact, nav } from "@/lib/content";
+import type { FooterContent, NavLink, SiteConfig } from "@/lib/content";
 
-export default function Footer() {
+// Rendered once in the root layout. Everything comes from the CMS: quick links (Navigation › Menu Links),
+// logo, contact and social links (SEO › Global, Navigation › Social Media & Footer) and the footer copy.
+export default function Footer({ links, site, copy }: { links: NavLink[]; site: SiteConfig; copy: FooterContent }) {
   return (
     <footer className="bg-concrete text-ink">
       <div className="tricolor h-1" />
       <div className={`${container} grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]`}>
         <div>
-          {/* Same full logo as the intro splash (emblem, name and tagline) */}
-          <LogoLockup className="h-auto w-52" />
-          <p className="mt-8 text-xs font-semibold uppercase tracking-wide text-steel">Follow Us</p>
+          <LogoLockup src={site.logo} alt={copy.logoAlt} className="h-auto w-52" />
+          <p className="mt-8 text-xs font-semibold uppercase tracking-wide text-steel">{copy.followUsLabel}</p>
           <div className="mt-3">
-            <SocialRow />
+            <SocialRow items={site.socialLinks ?? []} />
           </div>
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-steel">Quick Links</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-steel">{copy.quickLinksTitle}</p>
           <ul className="mt-4 grid grid-cols-2 gap-2 text-sm">
-            {nav.map((n) => (
-              <li key={n.href}>
-                <Link href={n.href} className="text-ink/80 hover:text-saffron">{n.label}</Link>
+            {links.map((n) => (
+              <li key={n.id}>
+                <Link href={n.href} className="text-ink/80 hover:text-saffron">
+                  {n.label}
+                </Link>
               </li>
             ))}
           </ul>
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-steel">Reach Us</p>
-          <p className="mt-4 text-sm text-ink/80">{contact.address}</p>
-          <p className="mt-2 text-sm text-ink/80">{contact.phone}</p>
-          <p className="mt-2 text-sm text-ink/80">{contact.email}</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-steel">{copy.reachUsTitle}</p>
+          {site.address && <p className="mt-4 text-sm text-ink/80">{site.address}</p>}
+          {site.phone && (
+            <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="mt-2 block text-sm text-ink/80 hover:text-saffron">
+              {site.phone}
+            </a>
+          )}
+          {site.email && (
+            <a href={`mailto:${site.email}`} className="mt-2 block text-sm text-ink/80 hover:text-saffron">
+              {site.email}
+            </a>
+          )}
         </div>
       </div>
       <div className="border-t border-zinc-300">
         <p className={`${container} py-6 text-xs text-steel`}>
-          © {new Date().getFullYear()} Indian Chamber of Construction Industry. All rights reserved.
+          © {new Date().getFullYear()} {copy.copyrightText}
         </p>
       </div>
     </footer>

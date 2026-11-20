@@ -1,25 +1,22 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import { container, delay, PageBanner, SectionHead } from "@/components/ui";
-import { events, heroSlides } from "@/lib/content";
+import { getEvents, getPage, type Event } from "@/lib/content";
+import { headingTag, pageMetadata } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Events – ICCI",
-  description: "Upcoming and past ICCI conferences, meetings and workshops.",
-};
+export const generateMetadata = () => pageMetadata("events", "/events");
 
-type Event = (typeof events)[number];
+/** Events › Upcoming / Past section as saved in the CMS. */
+type ListCopy = { tagline: string; headline: string; emptyText: string; emptyCtaLabel: string; emptyCtaLink: string };
 
-function EventList({ items, empty }: { items: Event[]; empty: string }) {
+function EventList({ items, copy }: { items: Event[]; copy: ListCopy }) {
   if (items.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-zinc-300 bg-white p-8 text-center" data-reveal>
-        <p className="text-steel">{empty}</p>
-        <Link href="/contact" className="group mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-saffron hover:text-india-green">
-          Contact the secretariat <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" strokeWidth={2} aria-hidden />
+        <p className="text-steel">{copy.emptyText}</p>
+        <Link href={copy.emptyCtaLink} className="group mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-saffron hover:text-india-green">
+          {copy.emptyCtaLabel} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" strokeWidth={2} aria-hidden />
         </Link>
       </div>
     );
@@ -27,7 +24,7 @@ function EventList({ items, empty }: { items: Event[]; empty: string }) {
   return (
     <div className="grid gap-4">
       {items.map((e, i) => (
-        <article key={e.title} data-reveal style={delay(`${i * 80}ms`)} className="grid gap-4 rounded-2xl border border-zinc-200 bg-white p-6 sm:grid-cols-[160px_1fr]">
+        <article key={e.id} data-reveal style={delay(`${i * 80}ms`)} className="grid gap-4 rounded-2xl border border-zinc-200 bg-white p-6 sm:grid-cols-[160px_1fr]">
           <div>
             <p className="font-semibold text-saffron">{e.date}</p>
             <p className="text-sm text-steel">{e.location}</p>
@@ -42,34 +39,35 @@ function EventList({ items, empty }: { items: Event[]; empty: string }) {
   );
 }
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const [page, events] = await Promise.all([getPage("events"), getEvents()]);
+
+  const s = page.sections;
+  const upcoming: ListCopy = s.UpcomingEventsSection;
+  const past: ListCopy = s.PastEventsSection;
+
   return (
-    <>
-      <Header />
-      <main>
-        <PageBanner photo={heroSlides[4].photo} eyebrow="Events">
-          Conferences, meetings and <span className="text-saffron">workshops</span>.
-        </PageBanner>
+    <main>
+      <JsonLd data={page.seo?.schema} />
+      <PageBanner hero={s.EventsHeroSection} as={headingTag(page.seo?.headingOptions)} />
 
-        <section id="upcoming" className="py-20 lg:py-24">
-          <div className={container}>
-            <SectionHead eyebrow="Upcoming" title="Upcoming events" />
-            <div className="mt-8">
-              <EventList items={events.filter((e) => !e.past)} empty="New events will be announced here soon." />
-            </div>
+      <section id="upcoming" className="py-20 lg:py-24">
+        <div className={container}>
+          <SectionHead eyebrow={upcoming.tagline} title={upcoming.headline} />
+          <div className="mt-8">
+            <EventList items={events.filter((e) => !e.isPast)} copy={upcoming} />
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="past" className="bg-concrete py-20 lg:py-24">
-          <div className={container}>
-            <SectionHead eyebrow="Past" title="Past events" />
-            <div className="mt-8">
-              <EventList items={events.filter((e) => e.past)} empty="Reports and photos from past events will appear here." />
-            </div>
+      <section id="past" className="bg-concrete py-20 lg:py-24">
+        <div className={container}>
+          <SectionHead eyebrow={past.tagline} title={past.headline} />
+          <div className="mt-8">
+            <EventList items={events.filter((e) => e.isPast)} copy={past} />
           </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+        </div>
+      </section>
+    </main>
   );
 }

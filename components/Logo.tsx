@@ -1,43 +1,28 @@
-import Image from "next/image";
+// ICCI artwork uploaded in the CMS (SEO › Global): emblem (dark + white ink) and full lockup.
 
-// Official ICCI artwork, derived from public/ICCI LOGO PNG-01.png into public/logo/.
-const MARK = { width: 480, height: 358 };
-const LOCKUP = { width: 720, height: 660 };
+type LogoProps = { src: string | null; alt: string; className?: string; priority?: boolean };
 
-type MarkProps = {
-  className?: string;
-  /** Ink colour: "#ffffff" (or "white") picks the white-ink variant for dark/photo backgrounds */
-  ink?: string;
-  /** Kept for call-site compatibility; the artwork has a transparent background */
-  bg?: string;
-  priority?: boolean;
-};
-
-/** ICCI emblem – house roof, pillars, tricolour bars and interlocked CC */
-export function LogoMark({ className, ink = "#111111", priority = false }: MarkProps) {
-  const white = ink.toLowerCase() === "#ffffff" || ink.toLowerCase() === "#fff" || ink === "white";
+/** Full logo (emblem, name and tagline), or any single logo image. */
+export function LogoLockup({ src, alt, className, priority = false }: LogoProps) {
+  if (!src) return null;
   return (
-    <Image
-      src={white ? "/logo/icci-mark-white.webp" : "/logo/icci-mark.webp"}
-      alt="ICCI emblem"
-      {...MARK}
-      loading={priority ? "eager" : undefined}
-      fetchPriority={priority ? "high" : undefined}
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt={alt}
       className={className}
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : undefined}
     />
   );
 }
 
-/** Full logo: emblem, name and tagline */
-export function LogoLockup({ className, priority = false }: { className?: string; priority?: boolean }) {
-  return (
-    <Image
-      src="/logo/icci-logo.webp"
-      alt="Indian Chamber of Construction Industry – Collaborate • Innovate • Transform"
-      {...LOCKUP}
-      loading={priority ? "eager" : undefined}
-      fetchPriority={priority ? "high" : undefined}
-      className={className}
-    />
-  );
+/** ICCI emblem: `white` picks the white-ink variant for photo backgrounds. */
+export function LogoMark({
+  src,
+  srcWhite,
+  white = false,
+  ...rest
+}: LogoProps & { srcWhite: string | null; white?: boolean }) {
+  return <LogoLockup src={white ? srcWhite : src} {...rest} />;
 }

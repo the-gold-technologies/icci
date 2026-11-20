@@ -1,15 +1,10 @@
-import type { Metadata } from "next";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import { ChaptersGrid, LeadersGrid, MoreLink } from "@/components/sections";
-import { afterSplash, container, delay, Eyebrow, ReadMore, SectionHead } from "@/components/ui";
-import { about, photos } from "@/lib/content";
+import { container, delay, Eyebrow, PageBanner, ReadMore, SectionHead } from "@/components/ui";
+import { getLeaders, getPage, paragraphs } from "@/lib/content";
+import { headingTag, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About – ICCI",
-  description:
-    "The Indian Chamber of Construction Industry is a not-for-profit organisation representing, promoting and protecting the interests of India’s construction and allied industries.",
-};
+export const generateMetadata = () => pageMetadata("about", "/about");
 
 const focusIcons = [
   "M3 21h18M5 21V10m4 11V10m6 11V10m4 11V10M2 10l10-6 10 6", // representation (institution)
@@ -18,43 +13,47 @@ const focusIcons = [
   "M8 12l3 3 5-6M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z", // partnerships
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const [page, leaders] = await Promise.all([getPage("about"), getLeaders()]);
+
+  const s = page.sections;
+  const aboutUs = s.AboutUsSection;
+  const focus = s.FocusAreasSection;
+  const mv = s.MissionVisionSection;
+  const leadership = s.LeadershipSection;
+  const chapters = s.ChaptersSection;
+
   return (
-    <>
-      <Header />
       <main>
-        {/* ───────────── Banner ───────────── */}
-        <section className="relative overflow-hidden text-white">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photos.about} alt="" className="enter-settle absolute inset-0 h-full w-full object-cover" style={delay("calc(var(--after-splash) * 0.8)")} />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1a0f08]/85 via-[#1a0f08]/55 to-[#1a0f08]/25" />
-          <div className={`${container} relative pb-16 pt-40 lg:pb-20 lg:pt-48`}>
-            <p className="enter flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/85" style={afterSplash(150)}>
-              <span className="enter-draw tricolor inline-block h-1 w-8 rounded-full" style={afterSplash(300)} />
-              About ICCI
-            </p>
-            <h1 className="enter mt-5 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl" style={afterSplash(300)}>
-              Building a stronger <span className="text-saffron">construction</span> industry, together.
-            </h1>
-          </div>
-        </section>
+        <JsonLd data={page.seo?.schema} />
+        <PageBanner hero={s.AboutHeroSection} as={headingTag(page.seo?.headingOptions)} />
 
         {/* ───────────── About Us ───────────── */}
         <section id="about-us" className="py-20 lg:py-28">
           <div className={container}>
-            <Eyebrow>About Us</Eyebrow>
+            <Eyebrow>{aboutUs.tagline}</Eyebrow>
             <div className="mt-6 grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
               <div className="relative overflow-hidden rounded-3xl lg:sticky lg:top-28" data-reveal="scale">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={photos.aboutSite} alt="Construction site" className="aspect-[4/3] w-full object-cover" />
+                <img
+                  src={aboutUs.image}
+                  alt={aboutUs.imageAlt}
+                  className="aspect-[4/3] w-full object-cover"
+                />
                 <div className="absolute bottom-4 left-4 rounded-2xl bg-white/95 px-5 py-3 shadow-lg backdrop-blur">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-steel">Not-for-profit</p>
-                  <p className="text-lg font-bold text-ink">Nationwide mandate</p>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-steel">
+                    {aboutUs.badgeLabel}
+                  </p>
+                  <p className="text-lg font-bold text-ink">
+                    {aboutUs.badgeTitle}
+                  </p>
                 </div>
               </div>
               <div data-reveal style={delay("120ms")}>
-                <p className="text-lg leading-relaxed text-ink">{about.intro.lead}</p>
-                <ReadMore paragraphs={about.intro.more} />
+                <p className="text-lg leading-relaxed text-ink">
+                  {aboutUs.lead}
+                </p>
+                <ReadMore paragraphs={paragraphs(aboutUs.more)} />
               </div>
             </div>
           </div>
@@ -63,10 +62,13 @@ export default function AboutPage() {
         {/* ───────────── Focus areas ───────────── */}
         <section className="bg-concrete py-16 lg:py-20">
           <div className={container}>
-            <SectionHead eyebrow="What We Work Towards" title="Where ICCI focuses its efforts" />
+            <SectionHead
+              eyebrow={focus.tagline}
+              title={focus.headline}
+            />
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {about.focus.map((f, i) => (
-                <div key={f.title} data-reveal style={delay(`${i * 100}ms`)} className="rounded-2xl border border-zinc-200 bg-white p-6 transition hover:-translate-y-1 hover:border-saffron hover:shadow-lg">
+              {focus.items.map((f: { title: string; text: string }, i: number) => (
+                <div key={i} data-reveal style={delay(`${i * 100}ms`)} className="rounded-2xl border border-zinc-200 bg-white p-6 transition hover:-translate-y-1 hover:border-saffron hover:shadow-lg">
                   <span className="grid h-11 w-11 place-items-center rounded-full bg-saffron/10 text-saffron">
                     <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                       <path d={focusIcons[i % focusIcons.length]} />
@@ -84,19 +86,23 @@ export default function AboutPage() {
         <section id="vision" className="py-20 lg:py-28">
           <div className={`${container} grid gap-6 lg:grid-cols-2`}>
             <div className="rounded-3xl border border-zinc-200 bg-white p-8 lg:p-10" data-reveal>
-              <Eyebrow>Our Mission</Eyebrow>
-              <p className="mt-6 text-xl font-semibold leading-snug text-ink sm:text-2xl">{about.mission.lead}</p>
-              <ReadMore paragraphs={about.mission.more} />
+              <Eyebrow>{mv.missionTagline}</Eyebrow>
+              <p className="mt-6 text-xl font-semibold leading-snug text-ink sm:text-2xl">
+                {mv.missionLead}
+              </p>
+              <ReadMore paragraphs={paragraphs(mv.missionMore)} />
             </div>
             <div className="relative overflow-hidden rounded-3xl bg-saffron p-8 text-white lg:p-10" data-reveal style={delay("150ms")}>
               <div className="hatch absolute inset-0" />
               <div className="relative">
                 <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/85">
                   <span className="inline-block h-1 w-8 rounded-full bg-white" />
-                  Our Vision
+                  {mv.visionTagline}
                 </p>
-                <p className="mt-6 text-xl font-semibold leading-snug sm:text-2xl">{about.vision.lead}</p>
-                <ReadMore paragraphs={about.vision.more} light />
+                <p className="mt-6 text-xl font-semibold leading-snug sm:text-2xl">
+                  {mv.visionLead}
+                </p>
+                <ReadMore paragraphs={paragraphs(mv.visionMore)} light />
               </div>
             </div>
           </div>
@@ -107,14 +113,14 @@ export default function AboutPage() {
           <div className={container}>
             <div className="flex flex-wrap items-end justify-between gap-6">
               <SectionHead
-                eyebrow="National Office Bearers"
-                title="The people leading the Chamber"
-                intro="Experienced industry leaders who came together to found ICCI and now steer it nationally."
+                eyebrow={leadership.tagline}
+                title={leadership.headline}
+                intro={leadership.intro}
               />
-              <MoreLink href="/leadership">Meet the full leadership</MoreLink>
+              <MoreLink href={leadership.linkHref}>{leadership.linkLabel}</MoreLink>
             </div>
             <div className="mt-12">
-              <LeadersGrid />
+              <LeadersGrid leaders={leaders.officeBearers} />
             </div>
           </div>
         </section>
@@ -123,17 +129,15 @@ export default function AboutPage() {
         <section id="chapters" className="py-20 lg:py-28">
           <div className={container}>
             <SectionHead
-              eyebrow="State Chapters"
-              title="ICCI across India"
-              intro="Each state chapter is led by local industry leadership, with a vision to establish a chapter in every state."
+              eyebrow={chapters.tagline}
+              title={chapters.headline}
+              intro={chapters.intro}
             />
             <div className="mt-10">
-              <ChaptersGrid />
+              <ChaptersGrid items={chapters.chapters} />
             </div>
           </div>
         </section>
       </main>
-      <Footer />
-    </>
   );
 }
