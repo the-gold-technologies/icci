@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import Splash from "@/components/Splash";
+import JsonLd from "@/components/JsonLd";
 import { SocialRail } from "@/components/Social";
 import { getNav, getSite, SITE_URL } from "@/lib/content";
 import "./globals.css";
@@ -40,6 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${poppins.variable} antialiased`} suppressHydrationWarning>
       <body className="min-h-full font-sans">
+        <JsonLd data={site.schema} />
         {site.customHeaderScripts && <div hidden dangerouslySetInnerHTML={{ __html: site.customHeaderScripts }} />}
         {site.gtmId && (
           <noscript>

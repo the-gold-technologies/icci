@@ -1,5 +1,4 @@
 import Link from "next/link";
-import JsonLd from "@/components/JsonLd";
 import { afterSplash, container, delay, Heading, HeroHeadline, SectionHead } from "@/components/ui";
 import HeroCarousel from "@/components/HeroCarousel";
 import {
@@ -65,8 +64,6 @@ export default async function Home() {
 
   return (
     <main id="top">
-      <JsonLd data={site.schema} />
-
       {/* ───────────── Hero ───────────── */}
       <section className="relative text-ink">
         <HeroCarousel hero={hero}>
