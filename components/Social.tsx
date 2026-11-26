@@ -1,8 +1,8 @@
 // Social media links: a fixed brand-coloured rail on the left edge (desktop) and round icons in the footer.
 import type { ReactNode } from "react";
-import { social } from "@/lib/content";
+import type { SocialLink } from "@/lib/content";
 
-// Every network we have a mark for; `social` in content.ts decides which are actually shown.
+// Every network we have a mark for; the CMS list (Navigation › Social Media) decides which are shown.
 type Key = "facebook" | "instagram" | "linkedin" | "x" | "youtube";
 
 // Brand marks drawn inline (lucide has no brand icons). All on a 24×24 grid.
@@ -51,46 +51,54 @@ function Icon({ name, className = "h-5 w-5" }: { name: Key; className?: string }
   );
 }
 
-// Placeholder "#" links stay in the same tab; real profile URLs open in a new one.
+// Profile URLs open in a new tab; relative links stay in the same one.
 const external = (href: string) => (href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {});
 
 /** Fixed brand-coloured tabs on the left edge of every page (hidden on small screens, where they'd cover text). */
-export function SocialRail() {
+export function SocialRail({ items }: { items: SocialLink[] }) {
   return (
     <nav aria-label="Social media" className="fixed left-0 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-1 md:flex">
-      {social.map((s) => (
-        <a
-          key={s.key}
-          href={s.href}
-          aria-label={s.label}
-          title={s.label}
-          {...external(s.href)}
-          className={`flex h-11 w-11 items-center justify-end rounded-r-xl pr-3 text-white shadow-md transition-all duration-200 hover:w-14 ${brandBg[s.key]}`}
-        >
-          <Icon name={s.key} />
-        </a>
-      ))}
+      {items.map((s) => {
+        const key = s.key as Key;
+        if (!icons[key]) return null;
+        return (
+          <a
+            key={key}
+            href={s.href}
+            aria-label={s.label}
+            title={s.label}
+            {...external(s.href)}
+            className={`flex h-11 w-11 items-center justify-end rounded-r-xl pr-3 text-white shadow-md transition-all duration-200 hover:w-14 ${brandBg[key]}`}
+          >
+            <Icon name={key} />
+          </a>
+        );
+      })}
     </nav>
   );
 }
 
 /** Round icon buttons for the footer. */
-export function SocialRow() {
+export function SocialRow({ items }: { items: SocialLink[] }) {
   return (
     <ul className="flex flex-wrap gap-3">
-      {social.map((s) => (
-        <li key={s.key}>
-          <a
-            href={s.href}
-            aria-label={s.label}
-            title={s.label}
-            {...external(s.href)}
-            className="grid h-10 w-10 place-items-center rounded-full bg-white text-ink/70 ring-1 ring-zinc-300 transition hover:bg-saffron hover:text-white hover:ring-saffron"
-          >
-            <Icon name={s.key} className="h-[18px] w-[18px]" />
-          </a>
-        </li>
-      ))}
+      {items.map((s) => {
+        const key = s.key as Key;
+        if (!icons[key]) return null;
+        return (
+          <li key={key}>
+            <a
+              href={s.href}
+              aria-label={s.label}
+              title={s.label}
+              {...external(s.href)}
+              className="grid h-10 w-10 place-items-center rounded-full bg-white text-ink/70 ring-1 ring-zinc-300 transition hover:bg-saffron hover:text-white hover:ring-saffron"
+            >
+              <Icon name={key} className="h-[18px] w-[18px]" />
+            </a>
+          </li>
+        );
+      })}
     </ul>
   );
 }

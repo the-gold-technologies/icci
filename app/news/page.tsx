@@ -1,31 +1,25 @@
-import type { Metadata } from "next";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import NewsBrowser from "@/components/NewsBrowser";
 import { container, PageBanner } from "@/components/ui";
-import { news, photos } from "@/lib/content";
+import { getNews, getPage } from "@/lib/content";
+import { headingTag, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "News & Articles – ICCI",
-  description: "Updates from the Indian Chamber of Construction Industry and the wider construction sector.",
-};
+export const generateMetadata = () => pageMetadata("news-and-articles", "/news");
 
-export default function NewsPage() {
+export default async function NewsPage() {
+  const [page, articles] = await Promise.all([getPage("news-and-articles"), getNews()]);
+  const s = page.sections;
+
   return (
-    <>
-      <Header />
-      <main>
-        <PageBanner photo={photos.about} eyebrow="News & Articles">
-          Updates from the <span className="text-saffron">Chamber</span> and the industry.
-        </PageBanner>
+    <main>
+      <JsonLd data={page.seo?.schema} />
+      <PageBanner hero={s.NewsHeroSection} as={headingTag(page.seo?.headingOptions)} />
 
-        <section className="bg-concrete py-14 lg:py-20">
-          <div className={container}>
-            <NewsBrowser items={news} />
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+      <section className="bg-concrete py-14 lg:py-20">
+        <div className={container}>
+          <NewsBrowser items={articles} copy={s.NewsBrowserSection} />
+        </div>
+      </section>
+    </main>
   );
 }
